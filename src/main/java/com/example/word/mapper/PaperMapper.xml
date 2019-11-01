@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.word.PaperMapper">
+<mapper namespace="com.example.word.mapper.PaperMapper">
     <select id="findStudents" resultType="Students" parameterType="String" >
-		{call selstuid("",'小明', '123');}
+		{call selstuid(#{semail},#{sname}, #{spass});}
 	</select>
 </mapper>
