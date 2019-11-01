@@ -3,5 +3,22 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.word.mapper.TeachersMapper">
-
+    <insert id="addPaper" parameterType="Paper">
+         insert into paper (pnum,wordid,pdate,classid,username) values(#{pnum},#{wordid},#{pdate},#{classid},#{username})
+    </insert>
+    <select id="findWordaList" resultType="Worda" parameterType="int">
+         select * from worda where 1=1 limit #{page},#{countPage}
+    </select>
+    <select id="findWordaCount" resultType="int">
+         select count(*) from worda
+    </select>
+    <select id="findMarkList" resultType="Mark"  parameterType="int">
+         select a.mid,b.sname,c.classname,a.mark,a.markdate,a.isflag,a.remark,a.pnum from mark a,students b,theclass c where a.stuid=b.stuid and a.stuclass=c.classid and b.stuclass=c.classid limit  #{page},#{countPage}
+    </select>
+    <select id="findMarkCount" resultType="int">
+         select count(*) from mark
+    </select>
+    <select id="MaxPaperNum">
+      select max(pnum) from paper
+    </select>
 </mapper>
