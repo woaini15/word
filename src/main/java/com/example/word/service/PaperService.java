@@ -12,7 +12,7 @@ public interface PaperService {
     //根据试卷号查询除单词序号以外的其他字段
     public Paper findPapernameService(String pnum);
     //试卷号查询
-    public List<Paper> findPnumService(int stuid);
+    public List<Paper> findPnumService(String stuid);
     //添加默写信息
     public int addWriteaService(Writea wri);
     //添加学生分数

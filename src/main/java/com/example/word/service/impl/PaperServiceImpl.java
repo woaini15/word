@@ -20,7 +20,7 @@ public class PaperServiceImpl implements PaperService {
     //根据试卷号查询除单词序号以外的其他字段
     public Paper findPapernameService(String pnum){return objPaperMapper.findPapername(pnum);}
     //试卷号查询
-    public List<Paper> findPnumService(int stuid){return objPaperMapper.findPnum(stuid);}
+    public List<Paper> findPnumService(String stuid){return objPaperMapper.findPnum(stuid);}
     //添加默写信息
     public int addWriteaService(Writea wri){return objPaperMapper.addWritea(wri);}
     //添加学生分数

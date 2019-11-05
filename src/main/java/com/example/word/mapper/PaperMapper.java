@@ -15,7 +15,7 @@ public interface PaperMapper {
     //根据试卷号查询除单词序号以外的其他字段
     public Paper findPapername(@Param("pnum")String pnum);
     //试卷号查询
-    public List<Paper> findPnum(@Param("stuid")int stuid);
+    public List<Paper> findPnum(@Param("stuid")String stuid);
     //添加默写信息
     public int addWritea(Writea wri);
     //添加学生分数

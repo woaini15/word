@@ -42,7 +42,7 @@
 	</select>
 
     <!-- 查询测试试卷号 -->
-    <select id="findPnum" resultType="Paper" parameterType="int">
+    <select id="findPnum" resultType="Paper" parameterType="String">
 		select pnum from paper where classid=(select stuclass from students where stuid=#{stuid}) and pdate=date(now()) group by pnum
 	</select>
     <!-- 添加默写信息 -->
