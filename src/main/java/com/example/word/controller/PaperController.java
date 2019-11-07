@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import com.alibaba.fastjson.JSON;
+
+import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
@@ -32,7 +34,7 @@ public class PaperController {
     }
     @RequestMapping("/getWordalist")
     @ResponseBody
-    public String getWordaList(@RequestParam(value = "pnum", required = false) String pnum,Model model) {
+    public String getWordaList(@RequestParam(value = "pnum", required = false) String pnum,Model model,HttpSession session) {
         List<Paper> list = service.findPaperListService(pnum);
         model.addAttribute("list", list);
         String json = JSON.toJSONString(list);
@@ -40,7 +42,7 @@ public class PaperController {
     }
     @RequestMapping("/getPnum")
     @ResponseBody
-    public String getPnum(@ModelAttribute("stuid")String stuid) {
+    public String getPnum(@ModelAttribute("stuid")String stuid, HttpSession session) {
         List<Paper> list=service.findPnumService(stuid);
         String json = JSON.toJSONString(list);
         return json;
