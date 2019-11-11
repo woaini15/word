@@ -46,7 +46,7 @@
 		select pnum from paper where classid=(select stuclass from students where stuid=#{stuid}) and pdate=date(now()) group by pnum
 	</select>
     <!-- 添加默写信息 -->
-    <insert id="addWriteid">
+    <insert id="addWritea">
 		insert into writea(pid,writeword,isyes,writedate,stuid,stuclass,pnum) values(#{pid},#{writeword},#{isyes},#{writedate},#{stuid},#{stuclass},#{pnum});
 	</insert>
     <!-- 添加分数信息 -->

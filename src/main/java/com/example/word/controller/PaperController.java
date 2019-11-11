@@ -30,6 +30,7 @@ public class PaperController {
     public String getPaperlist(@RequestParam(value = "pnum", required = false) String pnum,Model model) {
         Paper per = service.findPapernameService(pnum);
         model.addAttribute("per", per);
+        model.addAttribute("stuid", "a123");
         return "index";
     }
     @RequestMapping("/getWordalist")
@@ -53,7 +54,7 @@ public class PaperController {
                          @RequestParam(value = "classid", required = false) int classid,
                          @RequestParam(value = "pid", required = false) int[] pid,
                          @RequestParam(value = "word", required = false) String[] word,
-                         @ModelAttribute("stuid")String stuid) {
+                         @ModelAttribute("stuid")String stuid, HttpSession session) {
         List<Paper> list = service.findPaperListService(pnum);
         Writea writ=new Writea();
         Mark marks=new Mark();
