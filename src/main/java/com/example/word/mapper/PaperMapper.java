@@ -21,4 +21,6 @@ public interface PaperMapper {
     public int addWritea(Writea wri);
     //添加学生分数
     public int addMark(Mark mark);
+    //学生姓名
+    public Students findsname(@Param("stuid")String stuid);
 }

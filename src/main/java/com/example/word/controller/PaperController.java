@@ -26,18 +26,34 @@ import java.util.List;
 public class PaperController {
     @Autowired
     private PaperService service;
+    @RequestMapping("/get")
+    public String get(Model model) {
+        String sname=service.findsnameService("T101");
+        model.addAttribute("sname", sname);
+        model.addAttribute("stuid", "T101");
+        return "studentMain";
+    }
+    @RequestMapping("/findPaperMark")
+    public String findPaperMark(Model model) {
+        String sname=service.findsnameService("T101");
+        model.addAttribute("sname", sname);
+        model.addAttribute("stuid", "T101");
+        return "findPaperMark";
+    }
     @RequestMapping("/getPaperlist")
     public String getPaperlist(@RequestParam(value = "pnum", required = false) String pnum,Model model) {
         Paper per = service.findPapernameService(pnum);
         model.addAttribute("per", per);
-        model.addAttribute("stuid", "a123");
-        return "index";
+        String sname=service.findsnameService("T101");
+        model.addAttribute("sname", sname);
+        return "findPaperMark2";
     }
     @RequestMapping("/getWordalist")
     @ResponseBody
     public String getWordaList(@RequestParam(value = "pnum", required = false) String pnum,Model model,HttpSession session) {
         List<Paper> list = service.findPaperListService(pnum);
         model.addAttribute("list", list);
+        model.addAttribute("stuid", "T101");
         String json = JSON.toJSONString(list);
         return json;
     }

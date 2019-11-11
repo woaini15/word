@@ -2,6 +2,7 @@ package com.example.word.service.impl;
 
 import com.example.word.pojo.Mark;
 import com.example.word.pojo.Paper;
+import com.example.word.pojo.Students;
 import com.example.word.pojo.Writea;
 import com.example.word.service.PaperService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,4 +26,11 @@ public class PaperServiceImpl implements PaperService {
     public int addWriteaService(Writea wri){return objPaperMapper.addWritea(wri);}
     //添加学生分数
     public int addMarkService(Mark mark){return objPaperMapper.addMark(mark);}
+
+    @Override
+    public String findsnameService(String stuid) {
+        Students students=objPaperMapper.findsname(stuid);
+        String name=students.getSname();
+        return name;
+    }
 }

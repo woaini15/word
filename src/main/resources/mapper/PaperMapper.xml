@@ -53,4 +53,19 @@
     <insert id="addMark">
 		insert into mark(stuid,stuclass,mark,markdate,isflag,remark,pnum) values(#{stuid},#{stuclass},#{mark},#{markdate},#{isflag},#{remark},#{pnum});
 	</insert>
+	<!-- 学生姓名查询 -->
+	<resultMap type="Students" id="students">
+		<id property="stuid" column="stuid"/>
+		<result property="sname" column="sname"/>
+		<result property="spass" column="spass"/>
+		<result property="ssex" column="ssex"/>
+		<result property="semail" column="semail"/>
+		<result property="stuclass" column="stuclass"/>
+		<result property="spname" column="spname"/>
+		<result property="spphone" column="spphone"/>
+		<result property="saddress" column="saddress"/>
+	</resultMap>
+	<select id="findsname" resultType="students" parameterType="String" resultMap="students">
+		select sname from students where stuid=#{stuid}
+	</select>
 </mapper>

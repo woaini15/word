@@ -17,4 +17,6 @@ public interface PaperService {
     public int addWriteaService(Writea wri);
     //添加学生分数
     public int addMarkService(Mark mark);
+    //学生姓名
+    public String findsnameService(String stuid);
 }

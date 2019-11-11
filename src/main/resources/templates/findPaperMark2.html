@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>我的测试试卷题</title>
+	<link rel="icon" th:href="@{../layuicms/favicon.ico}">
+	<script type="text/javascript" th:src="@{../layuicms/js/jquery-2.1.1.js}"></script>
+	<link rel="stylesheet" th:href="@{../layuicms/layui/css/layui.css}">
+	<script type="text/javascript" th:src="@{../layuicms/layui/layui.js}"></script>
+	<link rel="stylesheet" th:href="@{../layuicms/css/index.css}" media="all" />
+	<link rel="stylesheet" th:href="@{../layuicms/css/wordwrite.css}" />
+	<style>
+	.hasBeenAnswer {
+		background: #5d9cec;
+		color:#fff;
+	}
+	</style>
+</head>
+<body>
+<form class="layui-form" action="/paper/getfen">
+	<div class="layui-layout layui-layout-admin">
+		<div style="height: 60px;background-color: #393D49;">
+			<a href="#" class="logo">WordWrite   TiKu</a>
+			<!-- 顶部右侧菜单 -->
+			<ul class="layui-nav top_menu">
+				<li class="layui-nav-item" id="userInfo">
+					<a href="updStuPwd.html" onclick="window.open(this.href,'','width=450,height=270,top=250, left=500');return false;"><img src="../layuicms/images/face.jpg" class="layui-nav-img userAvatar" width="35" height="35" title="修改密码"><span th:text="${sname}"></span></a>
+				</li>
+				<li class="layui-nav-item" id="login">
+					<a href="studentMain.html" onclick="if(confirm('确认要离开吗？')==false)return false;"><i class="seraph icon-tuichu"></i><cite>离开</cite></a>
+				</li>
+			</ul>
+		</div>
+		<br />
+		<div class="lianxi">
+			<div class="layui-row">
+				<div class="layui-col-sm2 layui-col-lg-offset1" >
+					试卷号：<span id="no" th:text="${per.pnum}"></span>
+					<input type="hidden" name="pnum" id="pnum" th:value="${per.pnum}">
+				</div>
+				<div class="layui-col-sm2 layui-col-md-offset1" >
+					考试班级：<span th:text="${per.the.classname}"></span>
+					<input type="hidden" name="classid" th:value="${per.the.classid}">
+				</div>
+				<div class="layui-col-sm2 layui-col-md-offset1" >
+					试卷日期：<span th:text="${#dates.format(per.pdate, 'yyyy-MM-dd')}"></span>
+				</div>
+				<div class="layui-col-sm2 layui-col-md-offset1" >
+					出题人员：<span th:text="${per.username}"></span>
+				</div>
+			</div>
+			<br />
+			<div class="lianxi-1">
+				<p style="text-align: center;">练习用时</p>
+				<p class="lianxi-2-p" id="timer">60:00</p>
+				<button type="submit" class="jiaojuan" id="btnAdd">我要交卷</button>
+				<!-- 查询答题序号
+                <div class="lianxi-li">
+					<ul>
+						<li th:each="page,pageStat:${list}">
+							<span style="display: none" th:text="${pageStat.size}" id="QuestionNumber"></span>
+							<a th:href="@{'#'+${pageStat.index}}"><span th:text="${pageStat.count}"></span></a>
+						</li>
+					</ul>
+				</div>
+				-->
+				<div class="lianxi-li">
+					<ul>
+						<li><a></a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="lianxi-2" id="aaa">
+				<!--
+				<div>
+					<span>1</span>
+					<cite>牛奶</cite>
+					<input type="text" name="milk" id="milk" value="milk" />
+				</div>
+				查询出题目按上面的格式循环
+				-->
+			</div>
+		</div>
+		<!-- 底部 -->
+		<div class="layui-footer footer">
+			<p><span>copyright @2019 <span th:text="${sname}"></span></span></p>
+		</div>
+	</div>
+</form>
+</body>
+<script type="text/javascript">
+	var maxtime = 60 * 60;
+	--maxtime;
+    function CountDown() {
+        if (maxtime >= 0) {
+            minutes = Math.floor(maxtime / 60);
+            seconds = Math.floor(maxtime % 60);
+            if(minutes<10){
+            	minutes="0"+minutes;
+            }
+            if(seconds<10){
+            	seconds="0"+seconds;
+            }
+            msg = minutes + ":" + seconds;
+            document.all["timer"].innerHTML = msg;
+            if (maxtime == 5 * 60)alert("距离结束仅剩5分钟");
+            --maxtime;
+        } else{
+            clearInterval(timer);
+            alert("时间到，结束!");
+			document.getElementById("btnAdd").click();
+        }
+    }
+    timer = setInterval("CountDown()", 1000);
+</script>
+<script type="text/javascript">
+	layui.use(['element','jquery','laydate','layer'], function(){
+		var element = layui.element;
+		var form = layui.form;
+		var layer = layui.layer;
+		laydate = layui.laydate;
+	});
+	$("document").ready(function(){
+		var arr =[];
+		var no=$("#pnum").val();
+		$.ajax({
+			type:"post",
+			url:"/paper/getWordalist",
+			data:{
+				pnum:no
+			},
+			dataType:"json",
+			success:function(data){
+				var h="";
+				var i=1;
+				$.each(data,function(a,b){
+					$.each(b.worda,function(a1,b1){
+						arr.push(b1.word);
+						h=h+"<br/><div>";
+						h=h+"<span>"+i+"</span><cite>"+b1.wordmeaning+"</cite>";
+						h=h+"<input type='hidden' name='pid' value='"+b.pid+"'>";
+						h=h+"<input type=\"text\" name=\"word\" id=\"word\" autocomplete='off'/>";
+						h=h+"</div>";
+						i++;
+					});
+				});
+				console.log(arr);
+				$("#aaa").html(h);
+			},
+			error:function(){
+				layer.msg('ajax执行错误！', {icon: 2,time: 1000});
+			}
+		});
+		$("form").submit(function(e){
+			var names =[];
+			$("input[name='word']").each(function(){
+				names.push($(this).val());
+			})
+			var count=0;
+			for(var s=0;s<arr.length;s++){
+				if(arr[s]==names[s]){
+					count++;
+				}
+			}
+			var age=count/arr.length;
+			alert(Math.round(age*100)+"分");
+			layer.alert(Math.round(age*100)+"分", {
+				icon: 1,
+				time: 50000,
+				skin: 'layer-ext-moon' //该皮肤由layer.seaning.com友情扩展。关于皮肤的扩展规则，去这里查阅
+			})
+		});
+	});
+</script>
+</html>
