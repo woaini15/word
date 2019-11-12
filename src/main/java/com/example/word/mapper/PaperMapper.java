@@ -1,12 +1,10 @@
 package com.example.word.mapper;
 
-import com.example.word.pojo.Students;
+import com.example.word.pojo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
-import com.example.word.pojo.Paper;
-import com.example.word.pojo.Writea;
-import com.example.word.pojo.Mark;
+
 @Mapper
 public interface PaperMapper {
     //学生登录

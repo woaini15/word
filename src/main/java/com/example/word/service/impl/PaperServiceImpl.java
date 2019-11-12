@@ -1,9 +1,6 @@
 package com.example.word.service.impl;
 
-import com.example.word.pojo.Mark;
-import com.example.word.pojo.Paper;
-import com.example.word.pojo.Students;
-import com.example.word.pojo.Writea;
+import com.example.word.pojo.*;
 import com.example.word.service.PaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

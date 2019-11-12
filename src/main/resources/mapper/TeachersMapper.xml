@@ -3,5 +3,28 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.word.mapper.TeachersMapper">
-
+    <!-- 查询班级 -->
+    <select id="findTheclass" resultType="Theclass">
+		select t.*,c.tname from theclass t, teacher c where t.teaid=c.teaid  limit #{page},#{countPage};
+	</select>
+	<!-- 查询总条数 -->
+	<select id="findTheclassCount" resultType="Int">
+		select count(*) from theclass
+	</select>
+    <!-- 添加班级 -->
+    <insert id="addTheclass">
+		insert into theclass(classid,classname,teaid) values(#{classid},#{classname},#{teaid});
+	</insert>
+    <!-- 修改班级 -->
+    <update id="updTheclass">
+		update theclass set classname=#{classname},teaid=#{teaid} where classid=#{classid};
+	</update>
+    <!-- 删除班级 -->
+    <delete id="delTheclass">
+		delete from theclass where classid=#{classid};
+	</delete>
+    <!-- 根据id查询班级 -->
+    <select id="findTheclassById" resultType="Theclass">
+		select * from theclass where classid=#{classid};
+	</select>
 </mapper>

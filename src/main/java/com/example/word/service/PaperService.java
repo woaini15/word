@@ -2,6 +2,7 @@ package com.example.word.service;
 
 import com.example.word.pojo.Mark;
 import com.example.word.pojo.Paper;
+import com.example.word.pojo.Theclass;
 import com.example.word.pojo.Writea;
 
 import java.util.List;

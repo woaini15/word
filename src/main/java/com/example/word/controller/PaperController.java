@@ -1,10 +1,7 @@
 package com.example.word.controller;
 
-import com.example.word.pojo.Writea;
+import com.example.word.pojo.*;
 import com.example.word.service.PaperService;
-import com.example.word.pojo.Paper;
-import com.example.word.pojo.Mark;
-import com.example.word.pojo.Worda;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
