@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>查询学生考试成绩</title>
+	<link rel="stylesheet" href="../layuicms/layui/css/layui.css"></link>
+	<script type="text/javascript" src="../layuicms/js/jquery-2.1.1.js"></script>
+	<script type="text/javascript" src="../layuicms/layui/layui.js"></script>
+	<script type="text/javascript" src="../layuicms/js/cache.js"></script>
+</head>
+<body>
+	<div class="layui-container" class="layui-form"><br/>
+		<div class='layui-row'>
+			<form class="layui-form">
+				<div class="layui-col-sm2" style="font-size: 20px;"><i class="layui-icon" style="margin-right: 10px;">&#xe63c;</i>查询学生考试成绩</div>
+			</form>
+		</div>
+		<hr/>
+		<!--  根据试卷号查询学生成绩表  -->
+		<div class="layui-row">
+			<table id="rcved" lay-filter="rcved" class="layui-table"></table>
+			<script type="text/html" id="barDemo">
+				<a class="layui-btn  layui-btn-normal layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe705;</i>发送短信至家长</a>
+			</script>
+		</div>
+	</div>
+</body>
+</html>

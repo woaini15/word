@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>学员管理</title>
+	<link rel="stylesheet" href="../layuicms/layui/css/layui.css">
+	<script type="text/javascript" src="../layuicms/js/jquery-2.1.1.js"></script>
+	<script type="text/javascript" src="../layuicms/layui/layui.js"></script>
+	<script type="text/javascript" src="../layuicms/js/cache.js"></script>
+</head>
+<body>
+	<div class="layui-fluid layui-form" ><br/>
+		<div class='layui-row'>
+			<div class="layui-col-sm2" style="font-size: 20px;"><i class="layui-icon" style="margin-right: 10px;">&#xe770;</i>学员管理</div>
+		</div>
+		<hr/>
+		<div class='layui-row'>
+			<div class="demoTable">
+				<div class="layui-col-sm8">
+					<div class="layui-inline">
+						<label class="layui-inline">学生编号</label>
+						<div class="layui-input-inline">
+							<input type="text" id="stuid" name="stuid"  autocomplete="off" class="layui-input" >
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-inline">学生姓名</label>
+						<div class="layui-input-inline">
+							<input type="text" id="sname" name="sname"  autocomplete="off" class="layui-input" >
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-sm2">
+					<button  class="layui-btn layui-btn-sm" id="btnFind"  data-type="reload"><i class="layui-icon">&#xe615;</i> 查询</button>
+					<button  class="layui-btn layui-btn-sm" id="btnAdd"><i class="layui-icon">&#xe654;</i>添加</button>
+				</div>
+			</div>
+		</div>
+		<!--  查询学员信息表  -->
+		<div class="layui-row">
+			<table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>
+			<script type="text/html" id="barDemo">
+				<a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</a>
+  				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+			</script>
+		</div>
+	</div>
+<input id="id2" type="hidden">
+</body>
+<script>
+    layui.use(['element', 'table', 'form', 'jquery', 'laydate','layer'], function () {
+        var element = layui.element;
+        var table = layui.table;         //表格
+        var form = layui.form;           //表单
+        var layer = layui.layer;         //弹层
+        var $ = layui.jquery;
+
+        //方法级渲染
+        var ins1=table.render({
+            elem: '#LAY_table_user'
+            ,url: '/teach/findStudentList'
+            ,where:{}
+            ,cols:[
+                [
+                {type:'numbers', fixed: false,title: '编号'}
+                ,{field:'stuid', align:'center', title: '学生学号',sort: true}
+                ,{field:'sname', align:'center', title: '学生姓名'}
+                ,{field:'ssex', align:'center', title: '学生性别'}
+                ,{field:'semail', align:'center', title: '学生邮箱'}
+                ,{field:'classname', align:'center', title: '所在班级'}
+                ,{field:'spname', align:'center', title: '家长姓名'}
+                ,{field:'spphone', align:'center', title: '家长电话'}
+                ,{field:'saddress', align:'center', title: '地址'}
+                ,{fixed: 'right', align:'center', title:'操作', toolbar: '#barDemo'}
+            ]
+			]
+            ,id: 'testReload'
+            ,page: true
+            ,height: 315
+            //再次渲染页面显示进度条
+            ,done:function(res,curr,count){
+                element.render();
+            }
+        });
+
+        var $ = layui.$, active = {
+            reload: function(){
+                var stuids = $('#stuid').val();
+                var snames = $('#sname').val();
+                //执行重载
+                table.reload('testReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        stuid:stuids,
+                        sname:snames
+                    }
+                    ,url: '/teach/findStudentList'
+					,method: 'get'
+                });
+            }
+        };
+        table.on('tool(user)', function(obj){
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+            if(obj.event === 'del'){
+                layer.confirm('真的删除信息吗?', function(index){
+                    $.ajax({
+                        type:"post",
+                        url:"/teach/delStudent",
+                        dataType:"json",
+                        data:{
+                            stuid:data.stuid
+                        },
+                        success:function(reqData){
+                            if(reqData>0){
+                                layer.msg('删除成功', {icon: 1,time: 1000});
+                            }else {
+                                layer.msg('删除失败', {icon: 2,time: 1000});
+                            }
+                        },
+                        error:function(){
+                            layer.msg('ajax执行错误！', {icon: 2,time: 1000});
+                        }
+                    });
+                    obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                    layer.close(index);
+                    //向服务端发送删除指令
+                });
+            } else if(obj.event === 'edit'){
+                $("#id2").val(data.stuid);
+                layer.open({
+                    type: 2,
+                    title: '编辑学员信息',
+                    maxmin: true, //最大最小窗口
+                    offset: 'auto',//位置居中
+                    shadeClose: true, //点击遮罩关闭层
+                    shade: 0.5,  //不显示遮罩
+                    area:['800px','420px'],    //宽   高
+                    content:'/teach/lookupdStudent' //弹框显示的url,对应的页面
+                });
+
+                //同步更新缓存对应的值
+                obj.update({
+                    username: '123'
+                    ,title: 'xxx'
+                });
+            }
+        });
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+  <script type="text/javascript">
+  	//点击添加弹出添加页面
+  	$("document").ready(function(){
+  		$("#btnAdd").click(function(){
+  			layer.open({
+  			    type: 2,
+  			    title: '添加学员信息',
+  			    maxmin: true, //最大最小窗口
+  			    offset: 'auto',//位置居中
+  			    shadeClose: true, //点击遮罩关闭层    
+  			    shade: 0.5,  //不显示遮罩
+  			    area:['800px','420px'],    //宽   高
+  			    content:'/teach/lookaddStudent' //弹框显示的url,对应的页面
+  			});
+  		});
+  	});
+  </script>
+  
+    <script type="text/javascript">
+	 layui.use('table',function(){
+		var laytable = layui.table;
+		//监听工具条
+		laytable.on('tool(rcved)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+			var data = obj.data; //获得当前行数据
+			var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+			var tr = obj.tr; //获得当前行 tr 的DOM对象
+			if(layEvent === 'edit'){ //编辑
+			     $("#stuid").val(data.stuid);
+			     layer.open({
+			     	type: 2,    
+		  			title: '编辑学员信息',
+		  			maxmin: true, //最大最小窗口
+		  			offset: 'auto',//位置居中
+		  			shadeClose: true, //点击遮罩关闭层    
+		  			shade: 0.5,  //不显示遮罩
+		  			area:['800px','420px'],    //宽   高
+  			    	content:'updStudent.html' //弹框显示的url,对应的页面  
+		  	     });
+			      
+				 //同步更新缓存对应的值
+				 obj.update({
+				     username: '123'
+				     ,title: 'xxx'
+				 });
+			 } 
+		 });
+	}); 
+  </script>
+</html>

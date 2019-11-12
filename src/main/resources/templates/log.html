@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/static/layuicms/logo.ico">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/layuicms/layui/css/layui.css" media="all" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/static/layuicms/css/public.css" media="all" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/layuicms/css/iconfont.css" media="all" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/layuicms/css/wrapper.css" media="all" />
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/layuicms/js/jquery-2.1.1.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath }/static/layuicms/layui/layui.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath }/static/layuicms/page/login/login.js"></script>
+    <link rel="shortcut icon" href="../layuicms/logo.ico">
+    <link rel="stylesheet" href="../layuicms/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="../layuicms/css/public.css" media="all" />
+    <link rel="stylesheet" href="../layuicms/css/iconfont.css" media="all" />
+    <link rel="stylesheet" href="../layuicms/css/wrapper.css" media="all" />
+    <script type="text/javascript" src="../layuicms/js/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="../layuicms/layui/layui.js"></script>
+    <script type="text/javascript" src="../layuicms/page/login/login.js"></script>
     <title>登录</title>
     <style type="text/css">
         .layui-input-block{
@@ -83,7 +83,7 @@
     </div>
     <div class="layui-form-item input-item">
         <label for="userName">用户名</label>
-        <input type="text" placeholder="请输入用户名" autocomplete="off" id="userName" class="layui-input" lay-verify="required">
+        <input type="text" placeholder="请输入名字或邮箱" autocomplete="off" id="userName" class="layui-input" lay-verify="required">
     </div>
     <div class="layui-form-item input-item">
         <label for="password">密码</label>
@@ -117,60 +117,57 @@
             var password=$("#password").val();
             if(userName=="" || userName==null){
                 //icon图标，time出现多久后消失
-                layer.msg('用户名不能为空！', {icon: 2,time: 10000});
-                $("#sho").show();
+                layer.msg('用户名或邮箱不能为空！', {icon: 2,time: 2000});
                 return false;
             }
             if(password=="" || password==null){
                 //icon图标，time出现多久后消失
-                layer.msg('密码不能为空！', {icon: 2,time: 10000});
-                $("#shor").show();
+                layer.msg('密码不能为空！', {icon: 2,time: 2000});
                 return false;
             }
             return true;
         }
         $("form").submit(function(){
-            ValueEmpty();
             if(ValueEmpty()==true){
                 var or=$('input:radio:checked').val();
                 if(or=="学生"){
                     $.ajax({
                         type:"post",
-                        url:"${pageContext.request.contextPath }/paper/getStudents",
+                        url:"/paper/getStudents",
                         data:{
                             semail:$("#userName").val(),
                             spwd:$("#password").val()
                         },
                         dataType:"json",
                         success:function(data){
-                            if(data<=0){
-                                alert("用户名或密码错误");
+                            if(data==null){
+                                layer.msg('用户名或密码错误', {icon: 5,time: 1000});
                             }else{
-                                window.location.href = "http://127.0.0.1:8080/word/paper/main";
+                                window.location.href = "/paper/lookstudent";
                             }
                         },
                         error:function(){
-                            layer.msg('ajax执行错误！', {icon: 2,time: 10000});
+                            layer.msg('ajax执行错误！', {icon: 2,time: 1000});
                         }
                     });
                 }else{
                     $.ajax({
                         type:"post",
-                        url:"http://127.0.0.1:8080/word/teach/getTeachers",
+                        url:"/teach/getTeachers",
                         data:{
-                            temail:$("#userName").val(),
-                            tpwd:$("#password").val()
+                            tname:$("#userName").val(),
+                            tpass:$("#password").val()
                         },
                         dataType:"json",
                         success:function(data){
                             if(data==null){
-                                alert("用户名或密码错误")
+                                layer.msg('用户名或密码错误', {icon:5,time: 1000});
                             }else{
-                                window.location.href = "http://127.0.0.1:8080/word/teach/themain";
+                                window.location.href = "/teach/lookteacher";
                             }
                         },
                         error:function(){
-                            layer.msg('ajax执行错误！', {icon: 2,time: 10000});
+                            layer.msg('ajax执行错误！', {icon: 2,time: 1000});
                         }
                     });
                 }

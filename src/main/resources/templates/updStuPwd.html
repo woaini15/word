@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>修改密码</title>
+	<link rel="stylesheet" href="../layuicms/layui/css/layui.css"></link>
+	<script type="text/javascript" src="../layuicms/js/jquery-2.1.1.js"></script>
+	<script type="text/javascript" src="../layuicms/layui/layui.js"></script>
+</head>
+<body>
+	<div class="layui-container layui-form"><br/>
+		<div class="layui-form">
+			<div class="layui-row">
+				<div class="layui-col-sm6">
+					<div class="layui-form-item">
+						<label class="layui-form-label">旧密码</label>
+						<div class="layui-input-block">
+							<input type="password" name="spass1" id="spass1"  lay-verify="required" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-row">
+				<div class="layui-col-sm6">
+					<div class="layui-form-item">
+						<label class="layui-form-label">新密码</label>
+						<div class="layui-input-block">
+							<input type="password" name="spass2" id="spass2"   class="layui-input">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-row">
+				<div class="layui-col-sm6">
+					<div class="layui-form-item">
+						<label class="layui-form-label">确认新密码</label>
+						<div class="layui-input-block">
+							<input type="password" name="spass" id="spass"   class="layui-input">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-row" style="text-align: right;">
+				<div class="layui-col-sm6">
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+							<button class="layui-btn layui-btn-sm" id="btnSave"><i class="layui-icon">&#xe605;</i>修改</button>
+							<button class="layui-btn layui-btn-sm" id="btnCancel"><i class="layui-icon">&#x1006;</i>取消</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+  <script type="text/javascript">
+      layui.use(['element', 'table', 'form', 'jquery', 'laydate','layer'], function () {
+          var element = layui.element;
+          var table = layui.table;         //表格
+          var form = layui.form;           //表单
+          var layer = layui.layer;         //弹层
+          var $ = layui.jquery;
+      });
+	//点击取消时关闭子页面
+	$("document").ready(function(){
+		$("#btnCancel").click(function(){
+			window.close();//关闭弹出的页面窗口
+		});
+		var too=true;
+        $("#spass1").blur(function(){
+            $.ajax({
+                type : "post",
+                url : "/paper/findPwd",
+                data : {
+                    spass: $("#spass1").val()
+                },
+                dataType : "JSON",
+                success : function(data) {
+                    if (data ==0) {
+                        layer.msg('密码错误，请重新输入', {icon: 5,time: 1000});
+                        too=false;
+                    }else{
+                        too=true;
+                    }
+                },
+                error : function() {
+                    layer.msg('ajax执行错误！', {icon: 2,time: 1000});
+                }
+            });
+        });
+            $("#btnSave").click(function(){
+                var spass2=$("#spass2").val();
+                var spass=$("#spass").val();
+                if(spass2!=spass){
+                    layer.msg('两次输入的密码不相同', {icon: 5,time: 1000});
+                    too=false;
+                }else{
+                    if(too){
+                        $.ajax({
+                            type : "post",
+                            url : "/paper/updPwd",
+                            data : {
+                                spass : $("#spass").val()
+                            },
+                            dataType : "JSON",
+                            success : function(data) {
+                                if(data>0){
+                                    layer.msg('修改成功', {icon: 1,time: 1000},
+                                        function(){
+                                            window.close();//关闭弹出的页面窗口
+                                        });
+                                }else {
+                                    layer.msg('修改失败', {icon: 2,time: 1000},
+                                        function(){
+                                        });
+                                }
+                            },
+                            error : function() {
+                                layer.msg('ajax执行错误！', {icon: 2,time: 1000});
+                            }
+                        });
+                    }
+				}
+            });
+	});
+  </script>
+</body>
+</html>

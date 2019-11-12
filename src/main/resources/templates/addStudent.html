@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head >
+	<meta charset="UTF-8">
+	<title>添加学生信息</title>
+	<link rel="stylesheet" href="../layuicms/layui/css/layui.css"></link>
+	<script type="text/javascript" src="../layuicms/js/jquery-2.1.1.js"></script>
+	<script type="text/javascript" src="../layuicms/layui/layui.js"></script>
+</head>
+<body>
+	<div class="layui-container layui-form" ><br/>
+		<div class="layui-form">
+			<div class="layui-row">
+				<div class="layui-col-sm6">
+					<div class="layui-form-item">
+						<label class="layui-form-label">学生学号</label>
+						<div class="layui-input-block">
+							<input type="text" name="stuid" id="stuid" th:value="${stuid}"  lay-verify="required" placeholder="请输入学生编号" autocomplete="off" class="layui-input" readonly >
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-sm6">
+					<div class="layui-form-item">
+						<label class="layui-form-label">学生姓名</label>
+						<div class="layui-input-block">
+							<input type="text" name="sname" id="sname"  lay-verify="required" placeholder="请输入学生姓名" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-row">
+				<div class="layui-col-sm6">
+					<div class="layui-form-item">
+						<label class="layui-form-label">学生密码</label>
+						<div class="layui-input-block">
+							<input type="text" name="spass" id="spass"  lay-verify="required" placeholder="请输入学生密码" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-sm6">
+					<div class="layui-form-item">
+						<label class="layui-form-label">学生性别</label>
+						<div class="layui-input-block">
+							<input type="radio" name="ssex" value="男" title="男">
+      						<input type="radio" name="ssex" value="女" title="女" checked>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-row">
+				<div class="layui-col-sm6">
+					<div class="layui-form-item">
+						<label class="layui-form-label">学生邮箱</label>
+						<div class="layui-input-block">
+							<input type="email" name="semail" id="semail"  lay-verify="required" placeholder="请输入学生邮箱" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-sm6">
+					<div class="layui-form-item">
+						<label class="layui-form-label">学生班级</label>
+						<div class="layui-input-block">
+							<select name="stuclass" id="stuclass" lay-verify="required">
+							    <option value="0">请选择班级</option>
+								<option th:each="c:${list}"  th:value="${c.classid}"  th:text="${c.classname}"></option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-row">
+				<div class="layui-col-sm6">
+					<div class="layui-form-item">
+						<label class="layui-form-label">家长姓名</label>
+						<div class="layui-input-block">
+							<input type="text" name="spname" id="spname" lay-verify="required" placeholder="请输入家长姓名" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>
+				<div class="layui-col-sm6">
+					<div class="layui-form-item">
+						<label class="layui-form-label">家长电话</label>
+						<div class="layui-input-block">
+							<input type="text" name="spphone" id="spphone" lay-verify="required" placeholder="请输入家长电话" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-row">
+				<div class="layui-col-sm12">
+					<div class="layui-form-item layui-form-text">
+						<label class="layui-form-label">学生地址</label>
+						<div class="layui-input-block">
+							<textarea name="saddress" id="saddress" lay-verify="required" autocomplete="off" placeholder="请输入地址" class="layui-textarea"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-row" style="text-align: right;">
+				<div class="layui-col-sm6">&nbsp;</div>
+				<div class="layui-col-sm6">
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+							<button class="layui-btn layui-btn-sm" id="btnSave"><i class="layui-icon">&#xe605;</i>添加</button>
+							<button class="layui-btn layui-btn-sm" id="btnCancel"><i class="layui-icon">&#x1006;</i>取消</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+  <script type="text/javascript">
+	//点击取消时关闭子页面
+	$("document").ready(function(){
+		$("#btnCancel").click(function(){
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	        parent.layer.close(index);//关闭弹出的子页面窗口
+		});
+	});
+	// Form模块的全自动渲染
+	layui.use(['form','laydate'], function(){
+		var form = layui.form,
+			  layer=layui.layer;
+	});
+  </script>
+<script type="text/javascript">
+    //验证数据是否为空
+    function ValueEmpty(){
+        var options = $("#stuclass option:selected").val();
+        if(options==0){
+            //icon图标，time出现多久后消失
+            layer.msg('请选择班级！', {icon: 2,time: 1000});
+            return false;
+        }
+        return true;
+    }
+    $("document").ready(function(){
+        $("#btnSave").click(function(){
+            if(ValueEmpty()==true){
+                $.ajax({
+                    type:"post",
+                    url:"/teach/addStudent",
+                    data:{
+                        stuid:$("#stuid").val(),
+                        sname:$("#sname").val(),
+                        spass:$("#spass").val(),
+                        ssex:$('input[name="ssex"]:checked').val(),
+                        semail:$("#semail").val(),
+                        stuclass:$("#stuclass option:selected").val(),
+                        spname:$("#spname").val(),
+                        spphone:$("#spphone").val(),
+                        saddress:$("#saddress").val(),
+                    },
+                    dataType:"json",
+                    success:function(data){
+                        if(data>0){
+                            layer.msg('添加成功', {icon: 1,time: 1000},
+                                function(){
+                                    parent.location.reload();
+                                });
+                        }else {
+                            layer.msg('添加失败', {icon: 2,time: 1000},
+                                function(){
+                                    parent.location.reload();
+                                });
+                        }
+                    },
+                    error:function(){
+                        layer.msg('ajax执行错误！', {icon: 2,time: 1000});
+                    }
+                });
+            }
+        });
+    });
+</script>
+</html>

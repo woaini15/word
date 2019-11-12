@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.word.mapper.PaperMapper">
+	<!--学生登录-->
+    <select id="findStudents" resultType="String" parameterType="String" >
+		{call selstuid(#{semail},#{sname}, #{spass})}
+	</select>
+	<!--查询密码-->
+	<select id="findSpass" resultType="int" parameterType="String" >
+		select count(1) from students where stuid=#{stuid} and spass=#{spass};
+	</select>
+	<!--修改密码-->
+	<update id="updSpass">
+		update students set spass=#{spass} where stuid=#{stuid};
+	</update>
+	<!--根据学号查姓名-->
+	<select id="findSname" resultType="String" parameterType="String" >
+		select sname from students where stuid=#{stuid}
+	</select>
+	<!--查询统计图的数据-->
+	<select id="findEchars" resultType="Echars" parameterType="String" >
+		select count(*) as num,writedate from writea where stuid=#{stuid} group by writedate order by writedate desc LIMIT 0,7
+	</select>
+</mapper>

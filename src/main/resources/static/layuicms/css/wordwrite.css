@@ -1,0 +1,130 @@
+body{
+	background-color: #E9E9E9;
+}
+.ceshi{
+	width: 70%;
+	margin:auto;
+	background-color: #FFFFFF;
+	padding-top: 15px;
+	padding-bottom: 5px;
+}
+h3{
+	background-color: #F9F9F9;
+	padding: 5px 5px;
+	color: #666666;
+	font-weight: bold;
+	padding-left: 25px;
+}
+.tongji{
+	width: 70%;
+	margin: auto;
+	background-color: #FFFFFF;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+.ceshi-div1{
+	width: 40%;
+	background-color: #F9F9F9;
+	margin: 25px 70px;
+	padding: 20px;
+}
+.jinru{
+	background-color: #A0C001;
+	text-align: center;
+	padding: 5px;
+	width:50%;
+	margin: auto;
+	border-radius: 25px;
+	margin-top: 25px;
+}
+.ceshi-div-cite{
+	text-align: center;
+	font-size: 20px;
+}
+.ceshi-div2{
+	width: 27%;
+	background-color: #F9F9F9;
+	margin: 25px 70px;
+	padding: 20px;
+	position: absolute;
+	right: 235px;
+	top: 106px;
+}
+.ceshi-div3{
+	width: 27%;
+	background-color: #F9F9F9;
+	margin: 25px 70px;
+	padding: 20px;
+	position: absolute;
+	right: 235px;
+	top: 252px;
+}
+.lianxi{
+	width: 70%;
+	margin:auto;
+	background-color: #FFFFFF;
+	padding-top: 15px;
+	padding-bottom: 5px;
+	height: 600px;
+}
+.jiaojuan{
+	background-color: #A0C001;
+	text-align: center;
+	padding: 5px;
+	width:75%;
+	border-radius: 25px;
+	margin: 40px;
+}
+.lianxi ul li{
+	background-color: #E9E9E9;
+	padding: 6px;
+	margin: 10px;
+	display: inline;
+}
+.lianxi-1{
+	width: 30%;
+}
+.lianxi-2{
+	margin-left: 10px;
+	width: 60%;
+	float: right;
+	font-size: 25px;
+	margin-top: -255px;
+}
+.lianxi-2 input{
+	border: 0px;
+	border-bottom: 1px black solid;
+}
+.lianxi-2 cite{
+	margin: 0px 25px;
+}
+.lianxi-2 span{
+	background-color:  #A0C001;
+	padding: 5px;
+}
+.lianxi-2 div{
+	margin-top: 25px;
+}
+.lianxi-2-p{
+	text-align: center;
+	font-size: 30px;
+	margin-top: 25px;
+	font-family: 'arial black';
+	color: #A0C001;
+}
+#markdiv{
+	width: 70%;
+	margin:auto;
+	background-color: #FFFFFF;
+	padding-top: 15px;
+	padding-bottom: 5px;
+	height: 600px;
+}
+#writeadiv{
+	width: 70%;
+	margin:auto;
+	background-color: #FFFFFF;
+	padding-top: 15px;
+	padding-bottom: 5px;
+	height: 600px;
+}

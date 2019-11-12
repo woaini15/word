@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>添加班级</title>
+	<link rel="stylesheet" href="../layuicms/layui/css/layui.css"></link>
+	<script type="text/javascript" src="../layuicms/js/jquery-2.1.1.js"></script>
+	<script type="text/javascript" src="../layuicms/layui/layui.js"></script>
+</head>
+<body>
+	<div class="layui-container" class="layui-form"><br/>
+		<div class="layui-form">
+			<div class="layui-row">
+				<div class="layui-col-sm3">
+					<div class="layui-form-item">
+						<label class="layui-form-label">班级名称</label>
+						<div class="layui-input-block">
+							<input type="text" name="classname" id="classname"  lay-verify="required" placeholder="请输入班级名称" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-row">
+				<div class="layui-col-sm3">
+					<div class="layui-form-item">
+						<label class="layui-form-label">老师编号</label>
+						<div class="layui-input-block">
+							<input type="text" name="teaid" id="teaid" lay-verify="required" placeholder="请输入老师编号" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-row" style="text-align: right;">
+				<div class="layui-col-sm3">
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+							<button class="layui-btn layui-btn-sm" id="btnSave"><i class="layui-icon">&#xe605;</i>添加</button>
+							<button class="layui-btn layui-btn-sm" id="btnCancel"><i class="layui-icon">&#x1006;</i>取消</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+  <script type="text/javascript">
+	//点击取消时关闭子页面
+	$("document").ready(function(){
+		$("#btnCancel").click(function(){
+			var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	        parent.layer.close(index);//关闭弹出的子页面窗口
+		});
+	});
+  </script>
+</html>

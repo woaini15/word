@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.word.mapper.TeachersMapper">
+    <!-- 老师登录 -->
+    <select id="findTeachers" resultType="String" parameterType="String">
+		select tname from teacher where tname=#{tname} and tpass=#{tpass}
+	</select>
+    <!--学生查询-->
+    <select id="findStudentList" resultType="Students" >
+        select a.*,b.classname from students a,theclass b where a.stuclass=b.classid
+            <if test="stuid!=null and stuid!=''">
+                and a.stuid like  CONCAT('%',#{stuid},'%')
+            </if>
+            <if test="sname!=null and sname!=''">
+                and a.sname like  CONCAT('%',#{sname},'%')
+            </if>
+        limit #{page},#{countPage}
+    </select>
+    <!-- 总条数查询 -->
+    <select id="countStudents" resultType="int" >
+		select count(*) from students a,theclass b where a.stuclass=b.classid
+            <if test="stuid!=null and stuid!=''">
+                and stuid like  CONCAT('%',#{stuid},'%')
+            </if>
+            <if test="sname!=null and sname!=''">
+                and sname like  CONCAT('%',#{sname},'%')
+            </if>
+	</select>
+    <!--学生更改-->
+    <update id="updStudents" >
+		UPDATE `students` SET `stuid`=#{stuid}, `sname`=#{sname}, `spass`=#{spass}, `ssex`=#{ssex}, `semail`=#{semail},
+		 `stuclass`=#{stuclass}, `spname`=#{spname}, `spphone`=#{spphone}, `saddress`=#{saddress} WHERE (`stuid`=#{stuid});
+	</update>
+    <!--学生添加-->
+    <insert id="addStudents">
+		INSERT INTO `students` (`stuid`, `sname`, `spass`, `ssex`, `semail`, `stuclass`, `spname`, `spphone`, `saddress`)
+		 VALUES (#{stuid}, #{sname}, #{spass},#{ssex},#{semail}, #{stuclass}, #{spname}, #{spphone}, #{saddress});
+	</insert>
+    <!--学生更改查询-->
+    <select id="getStudents" resultType="Students" parameterType="String" >
+		select * from students where `stuid`=#{stuid}
+	</select>
+    <!--学生删除-->
+    <delete id="delStudents">
+		delete from students where `stuid`=#{stuid}
+	</delete>
+    <!--班级查询-->
+    <select id="findTheclassList" resultType="Theclass" >
+		select * from theclass
+	</select>
+    <!--学生学号查询-->
+    <select id="findStuid" resultType="String" >
+		select stuid from students order by stuid desc limit 0,1
+	</select>
+</mapper>

@@ -15,6 +15,15 @@ public class Students {
     private String spname;   //家长姓名
     private String spphone;  //家长电话
     private String saddress; //地址
+    private String classname; //班级名称
+
+    public String getClassname() {
+        return classname;
+    }
+
+    public void setClassname(String classname) {
+        this.classname = classname;
+    }
 
     public String getStuid() {
         return stuid;

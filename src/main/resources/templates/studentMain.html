@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>学生主页面</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="Access-Control-Allow-Origin" content="*">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="icon" href="../layuicms/favicon.ico">
+	<link rel="stylesheet" href="../layuicms/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="../layuicms/css/index.css" media="all" />
+	<script type="text/javascript" src="../layuicms/js/jquery-2.1.1.js"></script>
+	<script type="text/javascript" src="../layuicms/js/echarts.min.js"></script>
+	<link rel="stylesheet" href="../layuicms/css/wordwrite.css" />
+</head>
+<body class="main_body">
+	<div class="layui-layout layui-layout-admin">
+		<div style="height: 60px;background-color: #393D49;">
+			<a href="#" class="logo">WordWrite   TiKu</a>
+			<!-- 顶部右侧菜单 -->
+			<ul class="layui-nav top_menu">
+				<li class="layui-nav-item" id="userInfo">
+					<a href="/paper/lookupdStuPwd" onclick="window.open(this.href,'','width=450,height=270,top=250, left=500');return false;"><img src="../layuicms/images/face.jpg" class="layui-nav-img userAvatar" width="35" height="35" title="修改密码"><cite class="adminName" th:text="${stu}"></cite></a>
+				</li>
+				<li class="layui-nav-item" id="login">
+					<a href="login.html"><i class="seraph icon-tuichu"></i><cite>退出</cite></a>
+				</li>
+			</ul>
+		</div>
+		<div class="ceshi">
+			<h3>测试入口</h3>
+			<div class="ceshi-div1">
+				<p class="ceshi-div-cite">我的练习</p>
+				<a href="practice.html" target="_self"><div class="jinru">进入</div></a>
+			</div>
+			<div class="ceshi-div2">
+				<p class="ceshi-div-cite">我的测试</p>
+				<a href="findPaperMark.html" target="_self"><div class="jinru">进入</div></a>
+			</div>
+			<div class="ceshi-div1">
+				<p class="ceshi-div-cite">考试成绩</p>
+				<a href="findByidStuMark.html" target="_self"><div class="jinru">进入</div></a>
+			</div>
+			<div class="ceshi-div3">
+				<p class="ceshi-div-cite">错题本</p>
+				<a href="findWritea.html" target="_self"><div class="jinru">进入</div></a>
+			</div>
+		</div>
+		<div class="tongji">
+			<h3>做题数量分析</h3>
+			<div id="main" style="width: 900px;height:450px;"></div>
+		</div>
+		<!-- 底部 -->
+		<div class="layui-footer footer">
+			<p><span>copyright @2019 winkli</span></p>
+		</div>
+	</div>
+	<script type="text/javascript">
+        $(document).ready(function(){
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('main'));
+            //数据加载完之前先显示一段简单的loading动画
+            myChart.showLoading();
+            var names=[];    //横坐标数组（实际用来盛放X轴坐标值）
+            var values=[];    //纵坐标数组（实际用来盛放Y坐标值）
+            $.ajax({
+                type : "post",
+                async : true,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url : "/paper/EcharsShow",    //请求发送到dataActiont处
+                data : {},
+                dataType : "json",        //返回数据形式为json
+                success : function(result) {
+                    //请求成功时执行该函数内容，result即为服务器返回的json对象
+                    if (result) {
+                        for(var i=0;i<result.length;i++){
+                            names.push(result[i].writedate);
+                            values.push(result[i].num);
+                        }
+                        myChart.hideLoading();    //隐藏加载动画
+                        myChart.setOption({        //加载数据图表
+                            tooltip: {},
+                            legend: {
+                                data:['做题數量']
+                            },
+                            xAxis: {
+                                data: names
+                            },
+                            yAxis: {
+                                type: 'value'
+                            },
+                            series: [{
+                                // 根据名字对应到相应的系列
+                                name: '做题數量',
+                                type: 'bar',
+                                data: values
+                            }]
+                        });
+                    }
+                },
+                error : function(errorMsg) {
+                    alert("图表请求数据失败!");
+                    myChart.hideLoading();
+                }
+            });//end ajax
+        });
+
+	</script>
+</body>
+
+</html>
