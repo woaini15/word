@@ -27,4 +27,8 @@
     <select id="findTheclassById" resultType="Theclass">
 		select * from theclass where classid=#{classid};
 	</select>
+	<!-- 查询老师 -->
+	<select id="findTeachers" resultType="Teachers">
+		select * from teacher;
+	</select>
 </mapper>

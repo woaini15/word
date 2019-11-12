@@ -1,5 +1,6 @@
 package com.example.word.service.impl;
 
+import com.example.word.pojo.Teachers;
 import com.example.word.pojo.Theclass;
 import com.example.word.service.TeachersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,10 @@ public class TeachersServiceImpl implements TeachersService {
     @Override
     public Theclass findTheclassByIdService(int classid) {
         return objTeachMapper.findTheclassById(classid);
+    }
+
+    @Override
+    public List<Teachers> findTeachersService() {
+        return objTeachMapper.findTeachers();
     }
 }

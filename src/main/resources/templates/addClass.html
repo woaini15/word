@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>添加班级</title>
 	<script type="text/javascript" src="../layuicms/js/jquery-2.1.1.js"></script>
 	<link rel="stylesheet" href="../layuicms/layui/css/layui.css">
 	<script type="text/javascript" src="../layuicms/layui/layui.js"></script>
+	<script type="text/javascript" src="../layuicms/js/cache.js"></script>
 </head>
 <body>
-	<div class="layui-container" class="layui-form"><br/>
+	<div class="layui-container layui-form"><br/>
 		<div class="layui-form">
 			<div class="layui-row">
 				<div class="layui-col-sm3">
@@ -25,10 +26,9 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">老师编号</label>
 						<div class="layui-input-block">
-							<select>
+							<select  name="teaid" id="teaid">
 								<option value="0">请选择...</option>
 							</select>
-							<input type="text" name="teaid" id="teaid" lay-verify="required" placeholder="请输入老师编号" autocomplete="off" class="layui-input">
 						</div>
 					</div>
 				</div>
@@ -56,3 +56,41 @@
 	});
   </script>
 </html>
+<script>
+	$("document").ready(function(){
+		//绑定下拉列表
+		$.ajax({
+			type : "POST",
+			url: "/teach/find",
+			dataType: "json",
+			success : function(data) {
+				$.each(data, function(index, item) {
+					$("[name='teaid']").append(  //此处向select中循环绑定数据
+							"<option value="+item.teaid+">" + item.tname+ "</option>");
+				});
+			},
+
+		});
+		$("#btnSave").click(function(){
+			$.ajax({
+				type : "post",
+				url : "/teach/addClass",
+				data : {
+					classname : $("#classname").val(),
+					teaid : $("#teaid").val()
+				},
+				dataType : "JSON",
+				success : function(data) {
+					if (data >0) {
+						alert("添加成功！");
+					}else {
+						alert("添加失败！");
+					}
+				},
+				error : function() {
+					alert("ajax错误");
+				}
+			});
+		});
+	});
+</script>

@@ -1,5 +1,6 @@
 package com.example.word.service;
 
+import com.example.word.pojo.Teachers;
 import com.example.word.pojo.Theclass;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface TeachersService {
     public int delTheclassService(int classid);
     //班级根据id查询
     public Theclass findTheclassByIdService(int classid);
+    //老师查询
+    public List<Teachers> findTeachersService();
 }

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../layuicms/js/jquery-2.1.1.js"></script>
+    <link rel="stylesheet" href="../layuicms/layui/css/layui.css">
+    <script type="text/javascript" src="../layuicms/layui/layui.js"></script>
+    <script type="text/javascript" src="../layuicms/js/cache.js"></script>
+</head>
+<body>
+<div class="layui-container layui-form"><br/>
+    <div class="layui-form">
+        <div class="layui-row">
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">班级名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="classname" id="classname"  lay-verify="required" placeholder="请输入班级名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">老师编号</label>
+                    <div class="layui-input-block">
+                        <select  name="teaid" id="teaid" lay-verify="required">
+                            <option value="0">请选择...</option>
+                        </select>
+                        <select name="city" lay-verify="">
+                            <option value="">请选择一个城市</option>
+                            <option value="010">北京</option>
+                            <option value="021">上海</option>
+                            <option value="0571">杭州</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-row" style="text-align: right;">
+            <div class="layui-col-sm3">
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn layui-btn-sm" id="btnSave"><i class="layui-icon">&#xe605;</i>添加</button>
+                        <button class="layui-btn layui-btn-sm" id="btnCancel"><i class="layui-icon">&#x1006;</i>取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    //点击取消时关闭子页面
+    $("document").ready(function(){
+        $("#btnCancel").click(function(){
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            parent.layer.close(index);//关闭弹出的子页面窗口
+        });
+    });
+</script>
+<script>
+    $("document").ready(function(){
+        //绑定下拉列表
+        $.ajax({
+            type : "POST",
+            url: "/teach/find",
+            dataType: "json",
+            success : function(data) {
+                $.each(data, function(index, item) {
+                    $("#teaid").append(  //此处向select中循环绑定数据
+                        "<option value="+item.teaid+">" + item.tname+ "</option>");
+                });
+            },
+
+        });
+    });
+</script>

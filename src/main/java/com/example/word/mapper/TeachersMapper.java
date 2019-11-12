@@ -1,5 +1,6 @@
 package com.example.word.mapper;
 
+import com.example.word.pojo.Teachers;
 import com.example.word.pojo.Theclass;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -20,4 +21,6 @@ public interface TeachersMapper {
     public int delTheclass(@Param("classid")int classid);
     //班级根据id查询
     public Theclass findTheclassById(@Param("classid")int classid);
+    //老师查询
+    public List<Teachers> findTeachers();
 }

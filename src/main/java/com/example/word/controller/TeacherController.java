@@ -1,5 +1,6 @@
 package com.example.word.controller;
 
+import com.example.word.pojo.Teachers;
 import com.example.word.pojo.Theclass;
 import com.example.word.service.TeachersService;
 import com.github.pagehelper.PageHelper;
@@ -19,7 +20,7 @@ public class TeacherController {
     @Autowired
     private TeachersService service;
     @RequestMapping("/showadd")
-    public String showadd() throws Exception {
+    public String showadd(Model model) {
         return "addClass";
     }
     @RequestMapping("/addClass")
@@ -71,7 +72,14 @@ public class TeacherController {
         // 拼装layui需要的json格式
         String layuiJson = "{\"code\":0,\"msg\":\"\",\"count\":" + count
                 + ",\"data\":" + json + "}";// 转换成layui数据表格的值格式
-        System.out.println("json--->:" + layuiJson);
         return layuiJson;
+    }
+    //查询老师信息,显示下拉列表数据
+    @RequestMapping("/find")
+    @ResponseBody
+    public String find(){
+        List<Teachers> obj=service.findTeachersService();
+        String json=JSON.toJSONString(obj);
+        return json;
     }
 }
