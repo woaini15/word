@@ -4,6 +4,7 @@ package com.example.word.pojo;
  */
 
 import java.util.Date;
+import java.util.List;
 
 public class Writea {
     private int writeid;                 //序号
@@ -14,6 +15,24 @@ public class Writea {
     private String stuid;              //学生id
     private int stuclass;              //学生班级id
     private String pnum;             //试卷号
+    private List<Worda> worda;
+    private Theclass the;
+
+    public List<Worda> getWorda() {
+        return worda;
+    }
+
+    public void setWorda(List<Worda> worda) {
+        this.worda = worda;
+    }
+
+    public Theclass getThe() {
+        return the;
+    }
+
+    public void setThe(Theclass the) {
+        this.the = the;
+    }
 
     public int getWriteid() {
         return writeid;

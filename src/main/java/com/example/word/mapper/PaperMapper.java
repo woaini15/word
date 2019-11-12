@@ -21,4 +21,6 @@ public interface PaperMapper {
     public int addMark(Mark mark);
     //学生姓名
     public Students findsname(@Param("stuid")String stuid);
+    //查询随机单词
+    public List<Worda> findWorda();
 }

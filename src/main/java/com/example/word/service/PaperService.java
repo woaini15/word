@@ -1,9 +1,6 @@
 package com.example.word.service;
 
-import com.example.word.pojo.Mark;
-import com.example.word.pojo.Paper;
-import com.example.word.pojo.Theclass;
-import com.example.word.pojo.Writea;
+import com.example.word.pojo.*;
 
 import java.util.List;
 
@@ -20,4 +17,6 @@ public interface PaperService {
     public int addMarkService(Mark mark);
     //学生姓名
     public String findsnameService(String stuid);
+    //查询随机单词
+    public List<Worda> findWordaService();
 }

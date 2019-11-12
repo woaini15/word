@@ -30,4 +30,9 @@ public class PaperServiceImpl implements PaperService {
         String name=students.getSname();
         return name;
     }
+
+    @Override
+    public List<Worda> findWordaService() {
+        return objPaperMapper.findWorda();
+    }
 }

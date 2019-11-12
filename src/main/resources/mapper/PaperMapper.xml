@@ -68,4 +68,9 @@
 	<select id="findsname" resultType="students" parameterType="String" resultMap="students">
 		select sname from students where stuid=#{stuid}
 	</select>
+
+	<!-- 查询随机单词 -->
+	<select id="findWorda" resultType="Worda" parameterType="String" >
+		SELECT * FROM worda ORDER BY RAND() LIMIT 10;
+	</select>
 </mapper>

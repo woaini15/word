@@ -104,4 +104,19 @@ public class PaperController {
         service.addMarkService(marks);
         return "center";
     }
+    //随机查询单词
+    @RequestMapping("/findWorda")
+    @ResponseBody
+    public String findWorda(){
+        List<Worda> list=service.findWordaService();
+        String json = JSON.toJSONString(list);
+        return json;
+    }
+
+    @RequestMapping("/findWritea")
+    public String findWritea(Model model) {
+
+        return "findWritea";
+    }
+
 }
