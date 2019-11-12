@@ -1,8 +1,7 @@
 package com.example.word.service.impl;
 
 import com.example.word.mapper.PaperMapper;
-import com.example.word.pojo.Echars;
-import com.example.word.pojo.Students;
+import com.example.word.pojo.*;
 import com.example.word.service.PaperService;
 import org.springframework.stereotype.Service;
 
@@ -37,4 +36,19 @@ public class PaperServiceImpl implements PaperService {
     public List<Echars> findEcharsService(String stuid) {
         return objPaperMapp.findEchars(stuid);
     }
+    //根据试卷号查询单词
+    @Override
+    public List<Paper> findPaperListService(String pnum){return objPaperMapp.findPaperList(pnum);}
+    //根据试卷号查询除单词序号以外的其他字段
+    @Override
+    public Paper findPapernameService(String pnum){return objPaperMapp.findPapername(pnum);}
+    //试卷号查询
+    @Override
+    public List<Paper> findPnumService(String stuid){return objPaperMapp.findPnum(stuid);}
+    //添加默写信息
+    @Override
+    public int addWriteaService(Writea wri){return objPaperMapp.addWritea(wri);}
+    //添加学生分数
+    @Override
+    public int addMarkService(Mark mark){return objPaperMapp.addMark(mark);}
 }

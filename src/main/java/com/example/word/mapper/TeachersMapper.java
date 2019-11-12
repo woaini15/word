@@ -29,4 +29,18 @@ public interface TeachersMapper {
     public List<Theclass> findTheclassList();
     //学生学号查询
     public String findStuid();
+    //班级查询
+    public List<Theclass> findTheclass(@Param("page")int page,@Param("countPage")int countPage);
+    // 总条数
+    public int findTheclassCount();
+    //添加班级
+    public int addTheclass(Theclass theclass);
+    //修改班级
+    public int updTheclass(Theclass theclass);
+    //删除班级
+    public int delTheclass(@Param("classid")int classid);
+    //班级根据id查询
+    public Theclass findTheclassById(@Param("classid")int classid);
+    //老师查询
+    public List<Teachers> findTeacher();
 }

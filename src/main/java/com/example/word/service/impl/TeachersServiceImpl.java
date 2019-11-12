@@ -57,4 +57,38 @@ public class TeachersServiceImpl implements TeachersService {
     public String findStuidService() {
         return objTeachMapper.findStuid();
     }
+    @Override
+    public List<Theclass> findTheclassService(int page,int countPage) {
+        return objTeachMapper.findTheclass(page,countPage);
+    }
+
+    @Override
+    public int findTheclassCountService() {
+        return objTeachMapper.findTheclassCount();
+    }
+
+    @Override
+    public int addTheclassService(Theclass theclass) {
+        return objTeachMapper.addTheclass(theclass);
+    }
+
+    @Override
+    public int updTheclassService(Theclass theclass) {
+        return objTeachMapper.updTheclass(theclass);
+    }
+
+    @Override
+    public int delTheclassService(int classid) {
+        return objTeachMapper.delTheclass(classid);
+    }
+
+    @Override
+    public Theclass findTheclassByIdService(int classid) {
+        return objTeachMapper.findTheclassById(classid);
+    }
+
+    @Override
+    public List<Teachers> findTeacherService() {
+        return objTeachMapper.findTeacher();
+    }
 }

@@ -4,6 +4,7 @@ package com.example.word.pojo;
  */
 
 import java.util.Date;
+import java.util.List;
 
 public class Paper {
     private int pid;                     //题目号
@@ -12,6 +13,24 @@ public class Paper {
     private Date pdate;             //试卷日期
     private int classid;              //考试班级
     private String username;    //出题人员
+    private List<Worda> worda;
+    private Theclass the;
+
+    public List<Worda> getWorda() {
+        return worda;
+    }
+
+    public void setWorda(List<Worda> worda) {
+        this.worda = worda;
+    }
+
+    public Theclass getThe() {
+        return the;
+    }
+
+    public void setThe(Theclass the) {
+        this.the = the;
+    }
 
     public int getPid() {
         return pid;

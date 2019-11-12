@@ -23,4 +23,50 @@
 	<select id="findEchars" resultType="Echars" parameterType="String" >
 		select count(*) as num,writedate from writea where stuid=#{stuid} group by writedate order by writedate desc LIMIT 0,7
 	</select>
+	<!-- 根据试卷号查询单词 -->
+	<resultMap type="Worda" id="wordid">
+		<id property="wordid" column="wordid"/>
+		<result property="wordmeaning" column="wordmeaning"/>
+		<result property="word" column="word"/>
+	</resultMap>
+	<resultMap type="Paper" id="findwordpaper">
+		<id property="pid" column="pid"/>
+		<result property="pnum" column="pnum"/>
+		<result property="pdate" column="pdate"/>
+		<result property="username" column="username"/>
+		<collection property="worda" ofType="Worda" resultMap="wordid"/>
+	</resultMap>
+	<select id="findPaperList" resultType="Paper" parameterType="String" resultMap="findwordpaper">
+		select a.pid,b.wordmeaning,b.word from paper a,worda b where a.wordid=b.wordid and a.pnum=#{pnum}
+	</select>
+
+	<!-- 根据试卷号查询试卷信息-->
+	<resultMap type="Theclass" id="theclass">
+		<id property="classid" column="classid"/>
+		<result property="classname" column="classname"/>
+		<result property="teaid" column="teaid"/>
+	</resultMap>
+	<resultMap type="Paper" id="findpaper">
+		<id property="pid" column="pid"/>
+		<result property="pnum" column="pnum"/>
+		<result property="pdate" column="pdate"/>
+		<result property="username" column="username"/>
+		<association property="the" javaType="Theclass" resultMap="theclass"></association>
+	</resultMap>
+	<select id="findPapername" resultType="Paper" parameterType="String" resultMap="findpaper">
+		select a.pnum,a.pdate,a.username,b.classname,b.classid,b.teaid from paper a,theclass b where a.classid=b.classid and a.pnum=#{pnum} limit 0,1
+	</select>
+
+	<!-- 查询测试试卷号 -->
+	<select id="findPnum" resultType="Paper" parameterType="String">
+		select pnum from paper where classid=(select stuclass from students where stuid=#{stuid}) and pdate=date(now()) group by pnum
+	</select>
+	<!-- 添加默写信息 -->
+	<insert id="addWritea">
+		insert into writea(pid,writeword,isyes,writedate,stuid,stuclass,pnum) values(#{pid},#{writeword},#{isyes},#{writedate},#{stuid},#{stuclass},#{pnum});
+	</insert>
+	<!-- 添加分数信息 -->
+	<insert id="addMark">
+		insert into mark(stuid,stuclass,mark,markdate,isflag,remark,pnum) values(#{stuid},#{stuclass},#{mark},#{markdate},#{isflag},#{remark},#{pnum});
+	</insert>
 </mapper>
