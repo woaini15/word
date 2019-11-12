@@ -21,6 +21,8 @@ public class TeacherController {
     private TeachersService service;
     @RequestMapping("/showadd")
     public String showadd(Model model) {
+        List<Teachers> obj=service.findTeachersService();
+        model.addAttribute("obj", obj);
         return "addClass";
     }
     @RequestMapping("/addClass")
@@ -39,12 +41,13 @@ public class TeacherController {
     @ResponseBody
     public Integer updClass(Theclass t) throws Exception {
         int count=service.updTheclassService(t);
+        System.out.println("count-->"+count);
         return count;
     }
     @RequestMapping("/editClass")
-    public String listFlow(int id, Model m) throws Exception {
-        Theclass t= service.findTheclassByIdService(id);
-        m.addAttribute("t", t);
+    public String listFlow(Model m) throws Exception {
+        List<Teachers> obj=service.findTeachersService();
+        m.addAttribute("obj", obj);
         return "editClass";
     }
 
@@ -74,12 +77,11 @@ public class TeacherController {
                 + ",\"data\":" + json + "}";// 转换成layui数据表格的值格式
         return layuiJson;
     }
-    //查询老师信息,显示下拉列表数据
     @RequestMapping("/find")
     @ResponseBody
-    public String find(){
-        List<Teachers> obj=service.findTeachersService();
-        String json=JSON.toJSONString(obj);
+    public String find(int id,Model model) {
+        Theclass t= service.findTheclassByIdService(id);
+        String json = JSON.toJSONString(t);
         return json;
     }
 }

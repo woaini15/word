@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,13 +10,14 @@
 </head>
 <body>
 <div class="layui-container layui-form"><br/>
+    <input type="hidden" id="id"/>
     <div class="layui-form">
         <div class="layui-row">
             <div class="layui-col-sm3">
                 <div class="layui-form-item">
                     <label class="layui-form-label">班级名称</label>
                     <div class="layui-input-block">
-                        <input type="text" name="classname" id="classname"  lay-verify="required" placeholder="请输入班级名称" autocomplete="off" class="layui-input">
+                        <input type="text" name="classname" id="classname" class="layui-input">
                     </div>
                 </div>
             </div>
@@ -26,14 +27,9 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">老师编号</label>
                     <div class="layui-input-block">
-                        <select  name="teaid" id="teaid" lay-verify="required">
+                        <select  name="tid" id="tid">
                             <option value="0">请选择...</option>
-                        </select>
-                        <select name="city" lay-verify="">
-                            <option value="">请选择一个城市</option>
-                            <option value="010">北京</option>
-                            <option value="021">上海</option>
-                            <option value="0571">杭州</option>
+                            <option th:each="t1:${obj}" th:value="${t1.teaid}" th:text="${t1.tname}"></option>
                         </select>
                     </div>
                 </div>
@@ -43,7 +39,7 @@
             <div class="layui-col-sm3">
                 <div class="layui-form-item">
                     <div class="layui-input-block">
-                        <button class="layui-btn layui-btn-sm" id="btnSave"><i class="layui-icon">&#xe605;</i>添加</button>
+                        <button class="layui-btn layui-btn-sm" id="btnSave"><i class="layui-icon">&#xe605;</i>保存</button>
                         <button class="layui-btn layui-btn-sm" id="btnCancel"><i class="layui-icon">&#x1006;</i>取消</button>
                     </div>
                 </div>
@@ -63,19 +59,58 @@
     });
 </script>
 <script>
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
     $("document").ready(function(){
-        //绑定下拉列表
+        $("#id").val(parent.$('#classid').val());
         $.ajax({
             type : "POST",
             url: "/teach/find",
             dataType: "json",
+            data:{
+                id:$("#id").val()
+            },
             success : function(data) {
-                $.each(data, function(index, item) {
-                    $("#teaid").append(  //此处向select中循环绑定数据
-                        "<option value="+item.teaid+">" + item.tname+ "</option>");
+                $("#classname").val(data.classname),
+                $("[name='tid'] option[value='"+data.teaid+"']").attr("selected","true");
+                layui.use(['form'], function () {
+                    $ = layui.jquery;
+                    var form = layui.form;
+                    form.render(); //刷新select选择框渲染
                 });
+
             },
 
+        });
+        $("#btnSave").click(function(){
+                $.ajax({
+                    type:"post",
+                    url:"/teach/updClass",
+                    data:{
+                        classid:$("#id").val(),
+                        classname:$("#classname").val(),
+                        teaid:$("#tid").val()
+                    },
+                    dataType:"json",
+                    success:function(data){
+                        if(data>0){
+                            layer.msg('修改成功', {icon: 1,time: 1000},
+                                function(){
+                                    parent.location.reload();
+                                });
+                        }else {
+                            layer.msg('修改失败', {icon: 2,time: 1000},
+                                function(){
+                                    parent.location.reload();
+                                });
+                        }
+                    },
+                    error:function(){
+                        layer.msg('ajax执行错误！', {icon: 2,time: 1000});
+                    }
+                });
         });
     });
 </script>

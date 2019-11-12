@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
 	<title>添加班级</title>
@@ -26,8 +26,9 @@
 					<div class="layui-form-item">
 						<label class="layui-form-label">老师编号</label>
 						<div class="layui-input-block">
-							<select  name="teaid" id="teaid">
+							<select  name="tid" id="tid">
 								<option value="0">请选择...</option>
+								<option th:each="t:${obj}" th:value="${t.teaid}" th:text="${t.tname}"></option>
 							</select>
 						</div>
 					</div>
@@ -58,33 +59,22 @@
 </html>
 <script>
 	$("document").ready(function(){
-		//绑定下拉列表
-		$.ajax({
-			type : "POST",
-			url: "/teach/find",
-			dataType: "json",
-			success : function(data) {
-				$.each(data, function(index, item) {
-					$("[name='teaid']").append(  //此处向select中循环绑定数据
-							"<option value="+item.teaid+">" + item.tname+ "</option>");
-				});
-			},
-
-		});
 		$("#btnSave").click(function(){
 			$.ajax({
 				type : "post",
 				url : "/teach/addClass",
 				data : {
 					classname : $("#classname").val(),
-					teaid : $("#teaid").val()
+					teaid : $("#tid").val()
 				},
 				dataType : "JSON",
 				success : function(data) {
 					if (data >0) {
 						alert("添加成功！");
+						parent.location.reload();
 					}else {
 						alert("添加失败！");
+						parent.location.reload();
 					}
 				},
 				error : function() {
@@ -92,5 +82,11 @@
 				}
 			});
 		});
+	});
+</script>
+<script>
+	layui.use('form', function(){
+		var form = layui.form;
+		form.render();
 	});
 </script>
