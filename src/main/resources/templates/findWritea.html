@@ -36,7 +36,7 @@
             <br />
             <div class="lianxi-1">
                 <p style="text-align: center;">练习用时</p>
-                <p class="lianxi-2-p" id="timer">60:00</p>
+                <p class="lianxi-2-p" id="timer">10:00</p>
                 <button type="submit" class="jiaojuan" id="btnAdd">我要交卷</button>
                 <!-- 查询答题序号
                 <div class="lianxi-li">
@@ -69,9 +69,45 @@
         <div class="layui-footer footer">
             <p><span>copyright @2019 11</span></p>
         </div>
+        <input type="text" id="pnum" name="pnum">
+    <input type="text" id="classid" name="classid" value="0" >
     </div>
 </form>
 </body>
+<script type="text/javascript">
+    function CurentTime()
+    {
+        var now = new Date();
+        var year = now.getFullYear();       //年
+        var month = now.getMonth() + 1;     //月
+        var day = now.getDate();            //日
+        var hh = now.getHours();            //时
+        var mm = now.getMinutes();          //分
+        var ss = now.getSeconds();           //秒
+        var ddd=now.getFullYear();
+        var clock = year;
+        if(month < 10)
+            clock += "0";
+        clock += month ;
+        if(day < 10)
+            clock += "0";
+        clock += day ;
+        if(hh < 10)
+            clock += "0";
+        clock += hh;
+        if (mm < 10) clock += '0';
+        clock += mm ;
+        if (ss < 10) clock += '0';
+        clock += ss;
+        return(clock);
+    }
+
+    $("document").ready(function(){
+        var kkk=CurentTime();
+        $("#pnum").val("S"+kkk);
+
+    });
+</script>
 <script type="text/javascript">
     var maxtime = 10 * 60;
     --maxtime;
@@ -106,30 +142,27 @@
     });
     $("document").ready(function(){
         var arr =[];
+        var pnum =$("#pnum").val();
+        alert(pnum);
         $.ajax({
             type:"post",
             url:"/paper/findWorda",
             data:{
+                pnum:pnum
 
             },
             dataType:"json",
             success:function(data){
-                alert(1);
-                alert(data);
                 var h="";
                 var i=1;
                 $.each(data,function(a,b){
-                    alert(b.worda);
-                    $.each(b.worda,function(a1,b1){
-                        alert(3);
-                        arr.push(b1.word);
+                        arr.push(b.word);
                         h=h+"<br/><div>";
-                        h=h+"<span>"+i+"</span><cite>"+b1.wordmeaning+"</cite>";
-                        h=h+"<input type='hidden' name='pid' value='"+b.pid+"'>";
+                        h=h+"<span>"+i+"</span><cite>"+b.wordmeaning+"</cite>";
+                        h=h+"<input type='hidden' name='pid' value='"+b.wordid+"'>";
                         h=h+"<input type=\"text\" name=\"word\" id=\"word\" autocomplete='off'/>";
                         h=h+"</div>";
                         i++;
-                    });
                 });
                 console.log(arr);
                 $("#aaa").html(h);
@@ -159,4 +192,5 @@
         });
     });
 </script>
+
 </html>

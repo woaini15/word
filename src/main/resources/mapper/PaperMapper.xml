@@ -73,4 +73,9 @@
 	<select id="findWorda" resultType="Worda" parameterType="String" >
 		SELECT * FROM worda ORDER BY RAND() LIMIT 10;
 	</select>
+
+	<!-- 添加随机试卷 -->
+	<insert id="addPaper">
+		insert into paper(pnum,wordid,pdate,classid,username) values(#{pnum},#{wordid},#{pdate},#{classid},#{username});
+	</insert>
 </mapper>

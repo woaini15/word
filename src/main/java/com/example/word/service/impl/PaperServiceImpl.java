@@ -35,4 +35,9 @@ public class PaperServiceImpl implements PaperService {
     public List<Worda> findWordaService() {
         return objPaperMapper.findWorda();
     }
+
+    @Override
+    public int addPaperService(Paper paper) {
+        return objPaperMapper.addPaper(paper);
+    }
 }

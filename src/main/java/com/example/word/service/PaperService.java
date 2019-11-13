@@ -19,4 +19,7 @@ public interface PaperService {
     public String findsnameService(String stuid);
     //查询随机单词
     public List<Worda> findWordaService();
+    //添加随机试卷
+    public int addPaperService(Paper paper);
+
 }

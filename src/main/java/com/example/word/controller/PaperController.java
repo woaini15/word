@@ -14,6 +14,8 @@ import com.alibaba.fastjson.JSON;
 
 import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -64,7 +66,7 @@ public class PaperController {
 
     @RequestMapping("/getfen")
     public String getfen(@RequestParam(value = "pnum", required = false) String pnum,
-                         @RequestParam(value = "classid", required = false) int classid,
+                         @RequestParam(value = "classid", required = false) Integer classid,
                          @RequestParam(value = "pid", required = false) int[] pid,
                          @RequestParam(value = "word", required = false) String[] word,
                          @ModelAttribute("stuid")String stuid, HttpSession session) {
@@ -102,20 +104,28 @@ public class PaperController {
         marks.setIsflag(0);
         marks.setPnum(pnum);
         service.addMarkService(marks);
-        return "center";
+        return "studentMain";
     }
     //随机查询单词
     @RequestMapping("/findWorda")
     @ResponseBody
-    public String findWorda(){
+    public String findWorda(@RequestParam(value = "pnum", required = false) String pnum){
         List<Worda> list=service.findWordaService();
         String json = JSON.toJSONString(list);
+        Paper paper =new Paper();
+
+        paper.setPnum(pnum);
+        paper.setPdate(new Date());
+        for(int i=0;i<list.size();i++){
+            paper.setWordid(list.get(i).getWordid());
+            service.addPaperService(paper);
+        }
         return json;
     }
 
     @RequestMapping("/findWritea")
     public String findWritea(Model model) {
-
+        model.addAttribute("stuid", "T102");
         return "findWritea";
     }
 
