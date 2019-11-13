@@ -17,15 +17,18 @@
 			<!-- 顶部右侧菜单 -->
 			<ul class="layui-nav top_menu">
 				<li class="layui-nav-item" id="userInfo">
-					<a href="updStuPwd.html" onclick="window.open(this.href,'','width=450,height=270,top=250, left=500');return false;"><img src="../layuicms/images/face.jpg" class="layui-nav-img userAvatar" width="35" height="35" title="修改密码"><span th:text="${sname}"></span></a>
+					<a href="/paper/lookupdStuPwd" onclick="window.open(this.href,'','width=450,height=270,top=250, left=500');return false;"><img src="../layuicms/images/face.jpg" class="layui-nav-img userAvatar" width="35" height="35" title="修改密码"><span th:text="${sname}"></span></a>
 				</li>
 				<li class="layui-nav-item" id="login">
-					<a href="studentMain.html" onclick="if(confirm('确认要离开吗？')==false)return false;"><i class="seraph icon-tuichu"></i><cite>离开</cite></a>
+					<a href="/paper/get" onclick="if(confirm('确认要离开吗？')==false)return false;"><i class="seraph icon-tuichu"></i><cite>离开</cite></a>
 				</li>
 			</ul>
 		</div>
 		<!--  查询考试信息表  -->
-		<div class="layui-row" id="markdiv">
+		<div class="layui-row" >
+			<ul id="markdiv">
+
+			</ul>
 		</div>
 		<!-- 底部 -->
 		<div class="layui-footer footer">
@@ -49,13 +52,12 @@
 			dataType:"JSON",
 			success:function(data){
 				var h="";
-				h=h+'<ul>';
 				layui.each(data,function(a,b){
-					h=h+'<li>';
-					h=h+"<a class=\"layui-btn layui-btn-px\" lay-event=\"detail\" href='/paper/getPaperlist?pnum="+b.pnum+"'><i class=\"layui-icon\">"+b.pnum+"号试卷</i><span style='margin-left: 705px;'>开始考试</span></a>";
+					h=h+'<li class="eve">';
+                    h=h+"<span>"+b.pnum+"号试卷</span>";
+					h=h+"<a  class=\"layui-btn layui-btn-sm\" style='background-color: #A0C001;' href='/paper/getPaperlist?pnum="+b.pnum+"'><i class=\"layui-icon\">&#xe642;</i>开始考试</a>";
 					h=h+'</li>';
 				});
-				h=h+"</ul>"
 				$("#markdiv").html(h);
 			},
 			error:function(){

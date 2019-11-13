@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>测试试卷题错</title>
+    <link rel="icon" th:href="@{../layuicms/favicon.ico}">
+    <script type="text/javascript" th:src="@{../layuicms/js/jquery-2.1.1.js}"></script>
+    <link rel="stylesheet" th:href="@{../layuicms/layui/css/layui.css}">
+    <script type="text/javascript" th:src="@{../layuicms/layui/layui.js}"></script>
+    <link rel="stylesheet" th:href="@{../layuicms/css/index.css}" media="all" />
+    <link rel="stylesheet" th:href="@{../layuicms/css/wordwrite.css}" />
+    <style>
+        .hasBeenAnswer {
+            background: #5d9cec;
+            color:#fff;
+        }
+    </style>
+</head>
+<body>
+<form class="layui-form" action="/paper/getfen">
+    <div class="layui-layout layui-layout-admin">
+        <div style="height: 60px;background-color: #393D49;">
+            <a href="#" class="logo">WordWrite   TiKu</a>
+            <!-- 顶部右侧菜单 -->
+            <ul class="layui-nav top_menu">
+                <li class="layui-nav-item" id="userInfo">
+                    <a href="/paper/lookupdStuPwd" onclick="window.open(this.href,'','width=450,height=270,top=250, left=500');return false;"><img src="../layuicms/images/face.jpg" class="layui-nav-img userAvatar" width="35" height="35" title="修改密码"><span th:text="${sname}"></span></a>
+                </li>
+                <li class="layui-nav-item" id="login">
+                    <a href="/paper/get" onclick="if(confirm('确认要离开吗？')==false)return false;"><i class="seraph icon-tuichu"></i><cite>离开</cite></a>
+                </li>
+            </ul>
+        </div>
+        <br />
+        <div class="lianxi">
+            <br />
+            <div class="lianxi-1">
+                <button type="button" class="jiaojuan" id="btnAdd">返回</button>
+                <div class="lianxi-li">
+                    <ul>
+                        <li><a></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="lianxi-2" id="aaa" style="margin-top: -150px;">
+            </div>
+        </div>
+        <!-- 底部 -->
+        <div class="layui-footer footer">
+            <p><span>copyright @2019 <span th:text="${sname}"></span></span></p>
+        </div>
+    </div>
+    <input type="text" th:value="${pnum}" id="pnum">
+</form>
+<script type="text/javascript">
+    layui.use(['element','jquery','laydate','layer'], function(){
+        var element = layui.element;
+        var form = layui.form;
+        var layer = layui.layer;
+        laydate = layui.laydate;
+    });
+    $("document").ready(function(){
+        var no=$("#pnum").val();
+        $.ajax({
+            type:"post",
+            url:"/paper/getdError",
+            data:{
+                pnum:no
+            },
+            dataType:"json",
+            success:function(data){
+                var h="";
+                var i=1;
+                $.each(data,function(a,b){
+                        h=h+"<br/><div>";
+                        h=h+"<span>"+i+"</span><cite>"+b.wordmeaning+"</cite>";
+                        h=h+"<input type=\"text\" name=\"word\" value='"+b.writeword+"' id=\"word\" autocomplete='off' readonly/>";
+                        h=h+"<p>正确答案：<span style='color: red'>"+b.word+"</span></p>"
+                        h=h+"</div>";
+                        i++;
+                });
+                console.log(data);
+                $("#aaa").html(h);
+            },
+            error:function(){
+                layer.msg('ajax执行错误！', {icon: 2,time: 1000});
+            }
+        });
+        $("#btnAdd").click(function(){
+            window.location.href = "/paper/lookstudent";
+        });
+    });
+</script>
+</body>
+</html>

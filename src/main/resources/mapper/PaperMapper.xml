@@ -57,9 +57,9 @@
 		select a.pnum,a.pdate,a.username,b.classname,b.classid,b.teaid from paper a,theclass b where a.classid=b.classid and a.pnum=#{pnum} limit 0,1
 	</select>
 
-	<!-- 查询测试试卷号 -->
+	<!-- 我的测试试卷号查询 -->
 	<select id="findPnum" resultType="Paper" parameterType="String">
-		select pnum from paper where classid=(select stuclass from students where stuid=#{stuid}) and pdate=date(now()) group by pnum
+		select pnum from paper where classid=(select stuclass from students where stuid=#{stuid}) and pdate=date(now()) and pnum like 'T%' group by pnum
 	</select>
 	<!-- 添加默写信息 -->
 	<insert id="addWritea">
@@ -68,5 +68,30 @@
 	<!-- 添加分数信息 -->
 	<insert id="addMark">
 		insert into mark(stuid,stuclass,mark,markdate,isflag,remark,pnum) values(#{stuid},#{stuclass},#{mark},#{markdate},#{isflag},#{remark},#{pnum});
+	</insert>
+	<!-- 查询测试试卷号 -->
+	<select id="findTMark" resultType="Mark" >
+		select * from mark where stuid=#{stuid} and pnum like 'T%' limit #{page},#{countPage};
+	</select>
+	<!-- 查询测试试卷号 -->
+	<select id="countTMark" resultType="int" parameterType="String">
+		select count(*) from mark where stuid=#{stuid} and pnum like 'T%' ;
+	</select>
+	<!-- 查询错题 -->
+	<select id="findError" resultType="Writea">
+		select a.writeword,c.wordmeaning,c.word from writea a,paper b,worda c where	a.pid=b.pid and b.wordid=c.wordid and a.isyes=0 and stuid=#{stuid} and a.pnum=#{pnum}
+	</select>
+	<!-- 我的练习试卷号查询 -->
+	<select id="findSPnum" resultType="Paper" parameterType="String">
+		select pnum from paper where pnum in(select pnum from writea where stuid=#{stuid} and pnum like 'S%' order by writedate desc) group by pnum
+	</select>
+	<!-- 查询随机单词 -->
+	<select id="findWorda" resultType="Worda" parameterType="String" >
+		SELECT * FROM worda ORDER BY RAND() LIMIT 10;
+	</select>
+
+	<!-- 添加随机试卷 -->
+	<insert id="addPaper">
+		insert into paper(pnum,wordid,pdate,classid,username) values(#{pnum},#{wordid},#{pdate},#{classid},#{username});
 	</insert>
 </mapper>

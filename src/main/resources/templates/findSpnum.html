@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="icon" th:href="@{../layuicms/favicon.ico}">
+    <script type="text/javascript" th:src="@{../layuicms/js/jquery-2.1.1.js}"></script>
+    <link rel="stylesheet" th:href="@{../layuicms/layui/css/layui.css}">
+    <script type="text/javascript" th:src="@{../layuicms/layui/layui.js}"></script>
+    <link rel="stylesheet" th:href="@{../layuicms/css/index.css}" media="all" />
+    <link rel="stylesheet" th:href="@{../layuicms/css/wordwrite.css}" />
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div style="height: 60px;background-color: #393D49;">
+        <a href="#" class="logo">WordWrite   TiKu</a>
+        <!-- 顶部右侧菜单 -->
+        <ul class="layui-nav top_menu">
+            <li class="layui-nav-item" id="userInfo">
+                <a href="/paper/lookupdStuPwd" onclick="window.open(this.href,'','width=450,height=270,top=250, left=500');return false;"><img src="../layuicms/images/face.jpg" class="layui-nav-img userAvatar" width="35" height="35" title="修改密码"><span th:text="${sname}"></span></a>
+            </li>
+            <li class="layui-nav-item" id="login">
+                <a href="/paper/get" onclick="if(confirm('确认要离开吗？')==false)return false;"><i class="seraph icon-tuichu"></i><cite>离开</cite></a>
+            </li>
+        </ul>
+    </div>
+    <!--  查询考试信息表  -->
+    <div class="layui-row" >
+        <ul id="markdiv">
+
+        </ul>
+    </div>
+    <!-- 底部 -->
+    <div class="layui-footer footer">
+        <p><span>copyright @2019 <span th:text="${sname}"></span></span></p>
+    </div>
+</div>
+<script type="text/javascript">
+    layui.use(['element','jquery','laydate','layer'], function(){
+        var element = layui.element;
+        var form = layui.form;
+        var layer = layui.layer;
+        laydate = layui.laydate;
+    });
+    $("document").ready(function() {
+        $.ajax({
+            type:"post",
+            url:"/paper/getSPnum",
+            data:{
+            },
+            dataType:"JSON",
+            success:function(data){
+                var h="";
+                layui.each(data,function(a,b){
+                    h=h+'<li class="eve">';
+                    h=h+"<span>"+b.pnum+"号试卷</span>";
+                    h=h+"<a  class=\"layui-btn layui-btn-sm\" style='background-color: #A0C001;' href='/paper/lookSError?pnum="+b.pnum+"'>试题分析</a>";
+                    h=h+'</li>';
+                });
+                $("#markdiv").html(h);
+            },
+            error:function(){
+                alert("ajax错误");
+            }
+        });
+    });
+</script>
+</body>
+</html>

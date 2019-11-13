@@ -20,26 +20,26 @@
 		<div class="layui-side layui-bg-black" style="margin-top: -50px;">
 			<a href="#" class="logo2">WordWrite</a>
 			<div class="user-photo">
-				<a class="img" title="我的头像" ><img src="../images/tu1.jpg" class="userAvatar"></a>
+				<a class="img" title="我的头像" ><img src="../layuicms/images/face.jpg" class="userAvatar"></a>
 				<p style="margin-top: 50px;">你好！
 				<span class="userName" th:text="${name}"></span>, 欢迎登录</p>
 			</div>
 			<div class="navBar layui-side-scroll" id="navBar" style="margin-top: 50px;">
 				<ul class="layui-nav layui-nav-tree">
 					<li class="layui-nav-item">
-						<a href="findClass.html" target="main"><i class="layui-icon">&#xe705;</i><cite>班级管理</cite></a>
+						<a href="/teach/get" target="main"><i class="layui-icon">&#xe705;</i><cite>班级管理</cite></a>
 					</li>
 					<li class="layui-nav-item">
 						<a href="/teach/lookfindStudent" target="main"><i class="layui-icon">&#xe770;</i><cite>学员管理</cite></a>
 					</li>
 					<li class="layui-nav-item">
-						<a href="findPaper.html" target="main"><i class="layui-icon">&#xe6b2;</i><cite>测评考试</cite></a>
+						<a href="/teach/showPaper" target="main"><i class="layui-icon">&#xe6b2;</i><cite>测评考试</cite></a>
 					</li>
 					<li class="layui-nav-item">
-						<a href="findMark.html" target="main"><i class="layui-icon">&#xe63c;</i><cite>查询成绩</cite></a>
+						<a href="/teach/showMark" target="main"><i class="layui-icon">&#xe63c;</i><cite>查询成绩</cite></a>
 					</li>
 					<li class="layui-nav-item">
-						<a href="login.html" target="_self"><i class="layui-icon">&#xe64d;</i><cite>退出</cite></a>
+						<a href="/paper/get" target="_self"><i class="layui-icon">&#xe64d;</i><cite>退出</cite></a>
 					</li>
 				</ul>
 			</div>

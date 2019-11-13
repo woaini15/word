@@ -70,11 +70,15 @@
 				dataType : "JSON",
 				success : function(data) {
 					if (data >0) {
-						alert("添加成功！");
-						parent.location.reload();
+                        layer.msg('添加成功！', {icon: 1,time: 1000},
+                            function(){
+                                parent.location.reload();
+                            });
 					}else {
-						alert("添加失败！");
-						parent.location.reload();
+                        layer.msg('添加失败！', {icon: 2,time: 1000},
+                            function(){
+                                parent.location.reload();
+                            });
 					}
 				},
 				error : function() {

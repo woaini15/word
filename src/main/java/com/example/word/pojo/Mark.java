@@ -14,6 +14,24 @@ public class Mark {
     private int isflag;            //是否发送给家长
     private String remark;   //备注
     private String pnum;      //试卷号
+    private String sname;
+    private String classname;
+
+    public String getSname() {
+        return sname;
+    }
+
+    public void setSname(String sname) {
+        this.sname = sname;
+    }
+
+    public String getClassname() {
+        return classname;
+    }
+
+    public void setClassname(String classname) {
+        this.classname = classname;
+    }
 
     public int getMid() {
         return mid;

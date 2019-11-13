@@ -51,4 +51,33 @@ public class PaperServiceImpl implements PaperService {
     //添加学生分数
     @Override
     public int addMarkService(Mark mark){return objPaperMapp.addMark(mark);}
+
+    @Override
+    public List<Mark> findTMarkService(String stuid,int page,int countPage) {
+        return objPaperMapp.findTMark(stuid,page,countPage);
+    }
+
+    @Override
+    public int countTMarkService(String stuid) {
+        return objPaperMapp.countTMark(stuid);
+    }
+
+    @Override
+    public List<Writea> findErrorService(String stuid, String pnum) {
+        return objPaperMapp.findError(stuid,pnum);
+    }
+
+    @Override
+    public List<Paper> findSPnumService(String stuid) {
+        return objPaperMapp.findSPnum(stuid);
+    }
+    @Override
+    public List<Worda> findWordaService() {
+        return objPaperMapp.findWorda();
+    }
+
+    @Override
+    public int addPaperService(Paper paper) {
+        return objPaperMapp.addPaper(paper);
+    }
 }

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>查询试卷信息</title>
+	<title>查询成绩</title>
 	<link rel="stylesheet" href="../layuicms/layui/css/layui.css"></link>
 	<script type="text/javascript" src="../layuicms/js/jquery-2.1.1.js"></script>
 	<script type="text/javascript" src="../layuicms/layui/layui.js"></script>
 	<script type="text/javascript" src="../layuicms/js/cache.js"></script>
 </head>
 <body>
-	<div class="layui-container" class="layui-form"><br/>
+	<div class="layui-fluid layui-form"><br/>
 		<div class='layui-row'>
 			<form class="layui-form">
 				<div class="layui-col-sm2" style="font-size: 20px;"><i class="layui-icon" style="margin-right: 10px;">&#xe63c;</i>查询成绩</div>
@@ -19,6 +19,7 @@
 		<!--  查询考试信息表  -->
 		<div class="layui-row">
 			<table id="rcved" lay-filter="rcved" class="layui-table"></table>
+            <input type="hidden" id="id" name="id">
 			<script type="text/html" id="barDemo">
 				<a class="layui-btn  layui-btn-normal layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe705;</i>查询</a>
 				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
@@ -29,13 +30,52 @@
   <script type="text/javascript">
 	layui.use('table',function(){
 		var laytable = layui.table;
+        laytable.render({
+            elem: '#rcved'
+            ,url: '/teach/findPaperController'
+            ,where: {
+            }
+            ,cols: [
+                [
+                {field:"pid",title:"编号", align:'center'},
+                {field:"pnum",title:"试卷号",align:'center'},
+                {field:"操作",align:'center',toolbar:'#barDemo'}
+            ]
+            ],
+            type:"post",
+            limit : 5,//默认50条数据一页
+            limits : [5,10,20,30] //数据分页条
+            ,id: 'testReload2'
+            ,page: true
+            ,height: 315
+            ,done: function (res, curr, count) {
+                exportData=res.data;
+            }
+        });
+        var $=layui.$,active={
+            reload:function(){
+                //执行重载
+                laytable.reload('testReload2',{
+                    page:{
+                        curr:1
+                    },
+                    where:{
+                    }
+                });
+            }
+        };
+        //单击查询
+        function showfind(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        };
 		//监听工具条
 		laytable.on('tool(rcved)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
 			var data = obj.data; //获得当前行数据
 			var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 			var tr = obj.tr; //获得当前行 tr 的DOM对象
 			if(layEvent === 'detail'){ //查看
-			     $("#pid").val(data.pid);
+			     $("#id").val(data.pnum);
 			     layer.open({
 			     	type: 2,    
 		  			title: '查看班级学员成绩',
@@ -43,8 +83,8 @@
 		  			offset: 'auto',//位置居中
 		  			shadeClose: true, //点击遮罩关闭层    
 		  			shade: 0.5,  //不显示遮罩
-		  			area:['800px','500px'],    //宽   高
-  			    	content:'findStuMark.html' //弹框显示的url,对应的页面  
+		  			area:['1000px' , '500px'],    //宽   高
+  			    	content:'/teach/showMarkScore' //弹框显示的url,对应的页面
 		  	    });
 			 } 
 		 });

@@ -24,10 +24,10 @@
 			<!-- 顶部右侧菜单 -->
 			<ul class="layui-nav top_menu">
 				<li class="layui-nav-item" id="userInfo">
-					<a href="updStuPwd.html" onclick="window.open(this.href,'','width=450,height=270,top=250, left=500');return false;"><img src="../layuicms/images/face.jpg" class="layui-nav-img userAvatar" width="35" height="35" title="修改密码"><span th:text="${sname}"></span></a>
+					<a href="/paper/lookupdStuPwd" onclick="window.open(this.href,'','width=450,height=270,top=250, left=500');return false;"><img src="../layuicms/images/face.jpg" class="layui-nav-img userAvatar" width="35" height="35" title="修改密码"><span th:text="${sname}"></span></a>
 				</li>
 				<li class="layui-nav-item" id="login">
-					<a href="studentMain.html" onclick="if(confirm('确认要离开吗？')==false)return false;"><i class="seraph icon-tuichu"></i><cite>离开</cite></a>
+					<a href="/paper/get" onclick="if(confirm('确认要离开吗？')==false)return false;"><i class="seraph icon-tuichu"></i><cite>离开</cite></a>
 				</li>
 			</ul>
 		</div>

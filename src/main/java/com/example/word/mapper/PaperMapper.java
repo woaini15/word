@@ -22,10 +22,24 @@ public interface PaperMapper {
     public List<Paper> findPaperList(@Param("pnum")String pnum);
     //根据试卷号查询除单词序号以外的其他字段
     public Paper findPapername(@Param("pnum")String pnum);
-    //试卷号查询
+    //我的测试试卷号查询
     public List<Paper> findPnum(@Param("stuid")String stuid);
     //添加默写信息
     public int addWritea(Writea wri);
     //添加学生分数
     public int addMark(Mark mark);
+    //查询测试分数
+    public List<Mark> findTMark(@Param("stuid")String stuid,@Param("page")int page,@Param("countPage")int countPage);
+    //查询测试分数总数
+    public int countTMark(@Param("stuid")String stuid);
+    //测试错题查询
+    public List<Writea> findError(@Param("stuid")String stuid,@Param("pnum")String pnum);
+    //我的练习试卷号查询
+    public List<Paper> findSPnum(@Param("stuid")String stuid);
+    //查询随机单词
+    public List<Worda> findWorda();
+    //添加随机试卷
+    public int addPaper(Paper paper);
+    //练习错题查询
+    public List<Writea> findSError(@Param("stuid")String stuid,@Param("pnum")String pnum);
 }

@@ -51,4 +51,16 @@ public interface PaperService {
     public int addWriteaService(Writea wri);
     //添加学生分数
     public int addMarkService(Mark mark);
+    //查询测试分数
+    public List<Mark> findTMarkService(String stuid,int page,int countPage);
+    //查询测试分数总数
+    public int countTMarkService(String stuid);
+    //错题查询
+    public List<Writea> findErrorService(String stuid,String pnum);
+    //我的练习试卷号查询
+    public List<Paper> findSPnumService(String stuid);
+    //查询随机单词
+    public List<Worda> findWordaService();
+    //添加随机试卷
+    public int addPaperService(Paper paper);
 }

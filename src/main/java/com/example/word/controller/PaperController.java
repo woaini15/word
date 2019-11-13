@@ -31,6 +31,26 @@ public class PaperController {
         model.addAttribute("stu", sname);
         return "studentMain";
     }
+    @RequestMapping("/lookfindByid")
+    public String lookfindByid(@ModelAttribute("stuid")String stuid, Model model) {
+        String sname=service.findSnameService(stuid);
+        model.addAttribute("stu", sname);
+        return "findByidStuMark";
+    }
+    @RequestMapping("/lookError")
+    public String lookError(@ModelAttribute("stuid")String stuid,@RequestParam(value = "pnum", required = false) String pnum,Model model) {
+        String sname=service.findSnameService(stuid);
+        model.addAttribute("sname", sname);
+        model.addAttribute("pnum", pnum);
+        return "findError";
+    }
+    @RequestMapping("/lookSError")
+    public String lookSError(@ModelAttribute("stuid")String stuid,@RequestParam(value = "pnum", required = false) String pnum,Model model) {
+        String sname=service.findSnameService(stuid);
+        model.addAttribute("sname", sname);
+        model.addAttribute("pnum", pnum);
+        return "findsError";
+    }
     @RequestMapping("/lookupdStuPwd")
     public String lookupdStuPwd() {
         return "updStuPwd";
@@ -84,6 +104,12 @@ public class PaperController {
         model.addAttribute("sname", sname);
         return "findPaperMark2";
     }
+    @RequestMapping("/findSpnum")
+    public String findSpnum(@ModelAttribute("stuid")String stuid,Model model) {
+        String sname=service.findSnameService(stuid);
+        model.addAttribute("sname", sname);
+        return "findSpnum";
+    }
     @RequestMapping("/getWordalist")
     @ResponseBody
     public String getWordaList(@RequestParam(value = "pnum", required = false) String pnum,Model model,HttpSession session) {
@@ -96,6 +122,13 @@ public class PaperController {
     @ResponseBody
     public String getPnum(@ModelAttribute("stuid")String stuid, HttpSession session) {
         List<Paper> list=service.findPnumService(stuid);
+        String json = JSON.toJSONString(list);
+        return json;
+    }
+    @RequestMapping("/getSPnum")
+    @ResponseBody
+    public String getSPnum(@ModelAttribute("stuid")String stuid, HttpSession session) {
+        List<Paper> list=service.findSPnumService(stuid);
         String json = JSON.toJSONString(list);
         return json;
     }
@@ -141,5 +174,55 @@ public class PaperController {
         marks.setPnum(pnum);
         service.addMarkService(marks);
         return "redirect:lookstudent";
+    }
+    @RequestMapping("/findTMark")
+    @ResponseBody
+    public String findTMark(@ModelAttribute("stuid")String stuid,
+                            @RequestParam(value = "limit", required = false) String limit,
+                            @RequestParam(value = "page", required = false) String page) {
+        // 获取页面显示的条数
+        int pageNum = Integer.parseInt(limit); //pageNum
+        // 获取页面当前页
+        int currPage = Integer.parseInt(page); //currPage
+        // 计算数据库的分页从第几行开始取数
+        // 假设每页显示条数为pageNum10条　当前页为第currPage3页　则(3-1)*10=20
+        // sql 语句为　　select * from 表    where 条件   limit 20,10
+        int pageCount = (currPage - 1) * pageNum;
+        List<Mark> list=service.findTMarkService(stuid,pageCount,pageNum);
+        int sum=service.countTMarkService(stuid);
+        String json = JSON.toJSONStringWithDateFormat(list,"yyyy-MM-dd");
+        System.out.println(json);
+        String path="{\"code\":0,\"msg\":\"\",\"count\":"+sum+",\"data\":"+json+"}";
+        return path;
+    }
+    @RequestMapping("/getdError")
+    @ResponseBody
+    public String getdError(@ModelAttribute("stuid")String stuid,@RequestParam(value = "pnum", required = false) String pnum,Model model){
+        List<Writea> list=service.findErrorService(stuid, pnum);
+        String json =JSON.toJSONString(list);
+        System.out.println(json);
+        return json;
+    }
+    //随机查询单词
+    @RequestMapping("/findWorda")
+    @ResponseBody
+    public String findWorda(@RequestParam(value = "pnum", required = false) String pnum){
+        List<Worda> list=service.findWordaService();
+        String json = JSON.toJSONString(list);
+        Paper paper =new Paper();
+
+        paper.setPnum(pnum);
+        paper.setPdate(new Date());
+        for(int i=0;i<list.size();i++){
+            paper.setWordid(list.get(i).getWordid());
+            service.addPaperService(paper);
+        }
+        return json;
+    }
+
+    @RequestMapping("/findWriteas")
+    public String findWriteas(@ModelAttribute("stuid")String stuid,Model model) {
+        model.addAttribute("stuid", stuid);
+        return "findWritea";
     }
 }

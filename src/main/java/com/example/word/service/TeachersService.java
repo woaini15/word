@@ -1,8 +1,6 @@
 package com.example.word.service;
 
-import com.example.word.pojo.Students;
-import com.example.word.pojo.Teachers;
-import com.example.word.pojo.Theclass;
+import com.example.word.pojo.*;
 
 import java.util.List;
 
@@ -78,4 +76,16 @@ public interface TeachersService {
     public Theclass findTheclassByIdService(int classid);
     //老师查询
     public List<Teachers> findTeacherService();
+    //添加
+    public int addPaperService(Paper objPaper);
+    //试卷号最大
+    public String MaxPaperNumService();
+    public List<Paper> findPaperListService(int page,int countPage);
+    public int findMarkCountService();
+    public List<Mark> findMarkScoreService(String pnum, int page, int countPage);
+    public List<Worda> findWordaListService(int page, int countPage);
+    public int findWordaCountService();
+    public Students getStuPhoneService(String stuid);
+    public int updMarkService(Mark objMark);
+    public Mark getByIdService(int mid);
 }

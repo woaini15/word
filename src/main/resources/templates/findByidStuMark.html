@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>查询个人考试分数</title>
+	<link rel="icon" th:href="@{../layuicms/favicon.ico}">
+	<script type="text/javascript" th:src="@{../layuicms/js/jquery-2.1.1.js}"></script>
+	<link rel="stylesheet" th:href="@{../layuicms/layui/css/layui.css}">
+	<script type="text/javascript" th:src="@{../layuicms/layui/layui.js}"></script>
+	<link rel="stylesheet" th:href="@{../layuicms/css/index.css}" media="all" />
+	<link rel="stylesheet" th:href="@{../layuicms/css/wordwrite.css}" />
+</head>
+<body>
+	<div class="layui-layout layui-layout-admin">
+		<div style="height: 60px;background-color: #393D49;">
+			<a href="#" class="logo">WordWrite   TiKu</a>
+			<!-- 顶部右侧菜单 -->
+			<ul class="layui-nav top_menu">
+				<li class="layui-nav-item" id="userInfo">
+					<a href="/paper/lookupdStuPwd" onclick="window.open(this.href,'','width=450,height=270,top=250, left=500');return false;"><img src="../layuicms/images/face.jpg" class="layui-nav-img userAvatar" width="35" height="35" title="修改密码"><cite class="adminName" th:text="${stu}"></cite></a>
+				</li>
+				<li class="layui-nav-item" id="login">
+					<a href="/paper/get" onclick="if(confirm('确认要离开吗？')==false)return false;"><i class="seraph icon-tuichu"></i><cite>离开</cite></a>
+				</li>
+			</ul>
+		</div>
+		<!--  查询考试分数表  -->
+		<div class="layui-row" id="markdiv">
+			<table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>
+			<script type="text/html" id="barDemo">
+				<a class="layui-btn  layui-btn-sm" lay-event="find">试题分析</a>
+			</script>
+		</div>
+		<!-- 底部 -->
+		<div class="layui-footer footer">
+			<p><span>copyright @2019 winkli</span></p>
+		</div>
+	</div>
+	<script>
+        layui.use(['element', 'table', 'form', 'jquery', 'laydate','layer'], function () {
+            var element = layui.element;
+            var table = layui.table;         //表格
+            var form = layui.form;           //表单
+            var layer = layui.layer;         //弹层
+            var $ = layui.jquery;
+
+            //方法级渲染
+            var ins1=table.render({
+                elem: '#LAY_table_user'
+                ,url: '/paper/findTMark'
+                ,where: {
+                }
+                ,cols: [
+                    [
+                    {type:'numbers', fixed: false,title: '编号'}
+                    ,{field:'pnum', align:'center', title: '试卷号'}
+                    ,{field:'mark', align:'center', title: '正确率',templet:function(d){var html='<div class="layui-progress layui-progress-big" lay-showPercent="yes">';
+                            html+='  <div class="layui-progress-bar layui-bg-green" lay-percent="'+Number(d.mark*100).toFixed()+'%"></div></div>';
+                            return html;
+                        }}
+                    ,{field:'markdate', align:'center', title: '考试日期'}
+                    ,{fixed: 'right', align:'center', title:'操作', toolbar: '#barDemo'}
+                ]
+				]
+                ,id: 'testReload'
+                ,page: true
+                ,height: 315
+                //再次渲染页面显示进度条
+                ,done:function(res,curr,count){
+                    element.render();
+                }
+            });
+
+            var $ = layui.$, active = {
+                reload: function(){
+                    var demoReload = $('#name');
+
+                    //执行重载
+                    table.reload('testReload', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        ,where: {
+                            opr: 1,
+                            name:demoReload.val()
+                        }
+                    });
+                }
+            };
+            table.on('tool(user)', function(obj){
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                var tr = obj.tr; //获得当前行 tr 的DOM对象
+                if(obj.event === 'find'){
+                    var pnum=data.pnum;
+                    window.location.href = "/paper/lookError?pnum="+pnum;
+                }
+            });
+            $('.demoTable .layui-btn').on('click', function(){
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        });
+	</script>
+</body>
+</html>
