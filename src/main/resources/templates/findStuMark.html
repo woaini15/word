@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查询学生考试成绩</title>
+    <link rel="stylesheet" href="../layuicms/layui/css/layui.css"></link>
+    <script type="text/javascript" src="../layuicms/js/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="../layuicms/layui/layui.js"></script>
+    <script type="text/javascript" src="../layuicms/js/cache.js"></script>
+    <script>
+        layui.use(['element', 'table', 'form', 'jquery', 'laydate','layer'], function(){
+            var element = layui.element;
+            var table = layui.table;         //表格
+            var form = layui.form;           //表单
+            var layer = layui.layer;         //弹层
+                laydate = layui.laydate;
+            var $ = layui.jquery;
+        });
+    </script>
+</head>
+<body>
+<div class="layui-container layui-form"><br/>
+    <div class='layui-row'>
+        <form class="layui-form">
+            <div class="layui-col-sm4" style="font-size: 20px;"><i class="layui-icon" style="margin-right: 10px;">&#xe63c;</i>查询学生考试成绩</div>
+        </form>
+    </div>
+    <hr/>
+    <!--  根据试卷号查询学生成绩表  -->
+    <div class="layui-row">
+        <input type="text" id="pnum2" name="pnum2"/>
+        <table id="rcved" lay-filter="rcved" class="layui-table"></table>
+        <script type="text/html" id="barDemo">
+            <a class="layui-btn  layui-btn-normal layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe705;</i>发送短信至家长</a>
+        </script>
+    </div>
+</div>
+<script type="text/javascript">
+    //点击查看分数时获取父页面的id值
+    $("document").ready(function(){
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+    });
+</script>
+<script type="text/javascript">
+    layui.use(['element', 'table', 'form', 'jquery', 'laydate','layer'], function () {
+        var element = layui.element;
+        var table = layui.table;         //表格
+        var form = layui.form;           //表单
+        var layer = layui.layer;         //弹层
+        var $ = layui.jquery;
+    //点击查看分数时获取父页面的id值
+    //$("document").ready(() => {
+        $("#pnum2").val(parent.$('#id').val());
+        var pnum=$("#pnum2").val();
+        var ins1=table.render({
+                elem: '#rcved'
+                , url: '/teach/findMarkScoreController?pnum='+pnum
+                , where: {
+                }
+                , cols: [
+                    [
+                        {field: 'mid', align: 'center', title: '分数序号', sort: true, fixed: true, width: '230px'}
+                        , {field: 'sname', align: 'center', title: '学生姓名', width: '220px'}
+                        , {field: 'classname', align: 'center', title: '学生班级', width: '220px'}
+                        , {
+                        field: 'mark', align: 'center', title: '正确率', width: '320px', templet: function (d) {
+                            var html = '<div class="layui-progress layui-progress-big" lay-showPercent="yes">';
+                            html += '  <div class="layui-progress-bar layui-bg-green" lay-percent="' + Number(d.mark).toFixed() + '%"></div></div>';
+                            return html;
+                        }
+                    }
+                        , {field: 'markdate', align: 'center', title: '分数日期', width: '240px'}
+                        , {field: 'isflag', align: 'center', title: '是否发送给家长(0否/1是)', width: '240px'}
+                        , {field: 'pnum', align: 'center', title: '试卷号', width: '220px'}
+                        , {fixed: 'right', align: 'center', title: '操作', toolbar: '#barDemo', width: '220px'}
+                    ]
+                ],
+                type: "post",
+                limit: 5,//默认50条数据一页
+                limits: [5, 10, 20, 30] //数据分页条
+                , id: 'testReload2'
+                , page: true
+                , height: 315
+                 //再次渲染页面显示进度条
+                ,done:function(res,curr,count){
+                element.render();
+            }
+            });
+            var $=layui.$,active={
+                reload:function(){
+                    //执行重载
+                    laytable.reload('testReload2',{
+                        page:{
+                            curr:1
+                        },
+                        where:{
+                        }
+                    });
+                }
+            };
+            //单击查询
+            function showfind(){
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            };
+        table.on('tool(rcved)', function(obj){
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+            if(obj.event === 'detail'){
+                alert(1111);
+                $.ajax({
+                    type:"post",
+                    url:"/teach/sendMark",
+                    dataType:"json",
+                    data:{
+                        isflag:1,
+                        mid:data.mid,
+                        stuid:data.stuid,
+                        mark:data.mark
+                    },
+                    success:function(reqData){
+                        if(reqData>0){
+                            layer.msg('发送成功', {icon: 1,time: 1000},
+                                function(){
+                                    window.location.reload();
+                                });
+                        }else {
+                            layer.msg('发送失败', {icon: 2,time: 1000});
+                        }
+                    },
+                    error:function(){
+                        layer.msg('ajax执行错误！', {icon: 2,time: 1000});
+                    }
+                });
+            }
+        });
+            $('.demoTable .layui-btn').on('click', function(){
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+    });
+</script>
+</body>
+</html>

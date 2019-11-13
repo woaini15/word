@@ -15,6 +15,27 @@ public class Mark {
     private String remark;   //备注
     private String pnum;      //试卷号
 
+    public String getSname() {
+        return sname;
+    }
+
+    public void setSname(String sname) {
+        this.sname = sname;
+    }
+
+    private String sname;
+
+
+    public String getClassname() {
+        return classname;
+    }
+
+    public void setClassname(String classname) {
+        this.classname = classname;
+    }
+
+    private String classname;
+
     public int getMid() {
         return mid;
     }

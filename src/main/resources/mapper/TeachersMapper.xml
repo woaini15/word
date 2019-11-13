@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.word.mapper.TeachersMapper">
+    <select id="findPaperList" resultType="Paper">
+        select * from paper limit #{page},#{countPage}
+    </select>
+    <select id="findMarkCount" resultType="int">
+        select count(*) from mark
+    </select>
+    <select id="findMarkScore" resultType="Mark">
+        select a.mid,b.sname,c.classname,a.mark,a.markdate,a.isflag,a.remark,a.pnum from mark a,students b,theclass c where a.stuid=b.stuid and a.stuclass=c.classid and b.stuclass=c.classid and a.pnum=#{pnum} limit #{page},#{countPage}
+    </select>
+    <insert id="addPaper" parameterType="Paper">
+         insert into paper (pnum,wordid,pdate,classid,username) values(#{pnum},#{wordid},#{pdate},#{classid},#{username})
+    </insert>
+    <select id="MaxPaperNum" resultType="String">
+      select max(pnum) from paper
+    </select>
+    <select id="findWordaList" resultType="Worda">
+         select * from worda limit #{page},#{countPage}
+    </select>
+    <select id="findWordaCount" resultType="int">
+        select count(*) from worda
+    </select>
+    <select id="getStuPhone" resultType="Students">
+        select spphone,sname from students where stuid=#{stuid}
+    </select>
+    <select id="getById" resultType="Mark">
+        select * from mark where mid=#{mid}
+    </select>
+    <update id="updMark" parameterType="Mark">
+        update mark set isflag=#{isflag} where mid=#{mid}
+    </update>
+</mapper>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>考试测评</title>
+    <link rel="stylesheet" href="../layuicms/layui/css/layui.css"><link>
+    <script type="text/javascript" src="../layuicms/js/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="../layuicms/layui/layui.js"></script>
+
+	<link rel="stylesheet" href="../layuicms/layui/css/layui.css"></link>
+	<script type="text/javascript" src="../layuicms/js/jquery-2.1.1.js"></script>
+	<script type="text/javascript" src="../layuicms/layui/layui.js"></script>
+	<script type="text/javascript" src="../layuicms/js/cache.js"></script>
+</head>
+<body>
+	<div class="layui-container layui-form"><br/>
+		<div class='layui-row'>
+			<form class="layui-form">
+				<div class="layui-col-sm2" style="font-size: 20px;"><i class="layui-icon" style="margin-right: 10px;">&#xe6b2;</i>考试测评</div>
+				<div class="layui-col-sm2">
+					<button type="button" class="layui-btn layui-btn-sm" id="btnAdd"><i class="layui-icon">&#xe654;</i>添加</button>
+				</div>
+			</form>
+		</div>
+		<hr/>
+		<!--  查询考试信息表  -->
+		<div class="layui-row">
+			<table id="rcved" lay-filter="rcved" class="layui-table">
+            </table>
+			<script type="text/html" id="barDemo">
+				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+			</script>
+		</div>
+	</div>
+</body>
+<script>
+    layui.use('table',function() {
+        var laytable = layui.table;
+        laytable.render({
+            elem: '#rcved'
+            ,url: '/teach/findPaperController'
+            ,where: {
+            }
+            ,cols: [
+                [
+                    {field:"pid",title:"编号", width:180,align:'center'},
+                    {field:"pnum",title:"试卷号",width:180,align:'center'},
+                    {field:"操作",width:240,align:'center',toolbar:'#barDemo'}
+                ]
+            ],
+            type:"post",
+            limit : 5,//默认50条数据一页
+            limits : [5,10,20,30] //数据分页条
+            ,id: 'testReload2'
+            ,page: true
+            ,height: 315
+            ,done: function (res, curr, count) {
+                exportData=res.data;
+            }
+        });
+        var $ = layui.$, active = {
+            reload: function () {
+                //执行重载
+                laytable.reload('testReload2', {
+                    page: {
+                        curr: 1
+                    },
+                    where: {}
+                });
+            }
+        };
+        //单击查询
+        function showfind() {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        };
+    })
+</script>
+  <script type="text/javascript">
+  	//点击添加弹出添加页面
+  	$("document").ready(function(){
+  		$("#btnAdd").click(function(){
+  			layer.open({
+  			    type: 2,
+  			    title: '添加试卷信息',
+  			    maxmin: true, //最大最小窗口
+  			    offset: 'auto',//位置居中
+  			    shadeClose: true, //点击遮罩关闭层    
+  			    shade: 0.5,  //不显示遮罩
+  			    area:['400px','510px'],    //宽   高
+  			    content:'/teach/showaddPaper' //弹框显示的url,对应的页面
+  			});
+  		});
+  	});
+  </script>
+</html>
